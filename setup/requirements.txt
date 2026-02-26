@@ -1,0 +1,22 @@
+# Core ML stack
+torch>=2.2
+
+# Time series / PHM
+phmd
+numpy
+pandas
+scipy
+scikit-learn
+
+# Storage / data formats
+webdataset
+pyarrow
+datasets
+
+# Utils
+tqdm
+pyyaml
+matplotlib
+
+# Tests (dev)
+pytest
