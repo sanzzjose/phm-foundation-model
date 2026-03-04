@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-05-20T12:37:36+00:00",
+  "audit_version": "2.2",
+  "window_size": 512,
+  "stride": 256,
+  "patch_size": 16,
+  "datasets_comparados": [
+    "PHM18",
+    "PHMAP23",
+    "PHM14",
+    "CNCMILL18",
+    "DUS20",
+    "PHME20",
+    "CBM14"
+  ],
+  "resultados": {
+    "PHM18": {
+      "n_filas_total": 1207000,
+      "n_canales": 22,
+      "drop": {
+        "n_windows": 2414,
+        "padding_ratio": 0.0,
+        "n_valid_patches": 77248,
+        "dropped_tail_rows": 280024,
+        "n_channel_patches": 1699456
+      },
+      "pad": {
+        "n_windows": 3621,
+        "padding_ratio": 0.1823,
+        "n_valid_patches": 95353,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 2097766
+      },
+      "elapsed_s": 674.7
+    },
+    "PHMAP23": {
+      "n_filas_total": 212577,
+      "n_canales": 8,
+      "drop": {
+        "n_windows": 531,
+        "padding_ratio": 0.0,
+        "n_valid_patches": 16992,
+        "dropped_tail_rows": 31329,
+        "n_channel_patches": 135936
+      },
+      "pad": {
+        "n_windows": 708,
+        "padding_ratio": 0.1636,
+        "n_valid_patches": 19116,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 152928
+      },
+      "elapsed_s": 1.7
+    },
+    "PHM14": {
+      "n_filas_total": 824520,
+      "n_canales": 317,
+      "drop": {
+        "n_windows": 1704,
+        "padding_ratio": 0.1677,
+        "n_valid_patches": 45716,
+        "dropped_tail_rows": 98872,
+        "n_channel_patches": 14491972
+      },
+      "pad": {
+        "n_windows": 2664,
+        "padding_ratio": 0.3951,
+        "n_valid_patches": 52346,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 16593682
+      },
+      "elapsed_s": 115.3
+    },
+    "CNCMILL18": {
+      "n_filas_total": 25286,
+      "n_canales": 48,
+      "drop": {
+        "n_windows": 74,
+        "padding_ratio": 0.0013,
+        "n_valid_patches": 2365,
+        "dropped_tail_rows": 1784,
+        "n_channel_patches": 113520
+      },
+      "pad": {
+        "n_windows": 91,
+        "padding_ratio": 0.1496,
+        "n_valid_patches": 2485,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 119280
+      },
+      "elapsed_s": 1.4
+    },
+    "DUS20": {
+      "n_filas_total": 194642,
+      "n_canales": 1,
+      "drop": {
+        "n_windows": 611,
+        "padding_ratio": 0.0,
+        "n_valid_patches": 19552,
+        "dropped_tail_rows": 12626,
+        "n_channel_patches": 19552
+      },
+      "pad": {
+        "n_windows": 710,
+        "padding_ratio": 0.1047,
+        "n_valid_patches": 20382,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 20382
+      },
+      "elapsed_s": 2.1
+    },
+    "PHME20": {
+      "n_filas_total": 75794,
+      "n_canales": 5,
+      "drop": {
+        "n_windows": 247,
+        "padding_ratio": 0.0,
+        "n_valid_patches": 7904,
+        "dropped_tail_rows": 4882,
+        "n_channel_patches": 39520
+      },
+      "pad": {
+        "n_windows": 277,
+        "padding_ratio": 0.0739,
+        "n_valid_patches": 8223,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 41115
+      },
+      "elapsed_s": 0.4
+    },
+    "CBM14": {
+      "n_filas_total": 11934,
+      "n_canales": 16,
+      "drop": {
+        "n_windows": 41,
+        "padding_ratio": 0.0,
+        "n_valid_patches": 1312,
+        "dropped_tail_rows": 670,
+        "n_channel_patches": 20992
+      },
+      "pad": {
+        "n_windows": 44,
+        "padding_ratio": 0.0384,
+        "n_valid_patches": 1355,
+        "dropped_tail_rows": 0,
+        "n_channel_patches": 21680
+      },
+      "elapsed_s": 1.0
+    }
+  },
+  "note": "Comparativa de tail_policy drop vs pad sobre los datasets con tail_drop_ratio > 0.05 en audit v2.2. No modifica el audit principal."
+}
