@@ -1,0 +1,461 @@
+{
+  "audit_version": "2.3",
+  "timestamp": "2026-05-20T18:03:35+00:00",
+  "window_size": 512,
+  "stride": 256,
+  "patch_size": 16,
+  "tail_policy": "pad",
+  "note": "Estructura v2.3: leer payload[\"clients\"][cliente] para el detalle por cliente. La meta top-level expone audit_version, timestamp, window_size, stride, patch_size y tail_policy operacional.",
+  "clients": {
+    "aero_engines": {
+      "n_datasets": 1,
+      "n_temporal_patches": 5530406,
+      "n_channel_patches": 110608120,
+      "client_weight_temporal_patches": 0.031504,
+      "client_weight_channel_patches": 0.119879,
+      "datasets": [
+        {
+          "dataset": "NCMAPSS",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "aero_engines",
+          "n_unidades": 60,
+          "n_windows": 172869,
+          "n_temporal_patches": 5530406,
+          "n_channel_patches": 110608120,
+          "size_mb": 7080.71
+        }
+      ]
+    },
+    "batteries": {
+      "n_datasets": 5,
+      "n_temporal_patches": 5757143,
+      "n_channel_patches": 34724370,
+      "client_weight_temporal_patches": 0.032796,
+      "client_weight_channel_patches": 0.037635,
+      "datasets": [
+        {
+          "dataset": "NB1",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "batteries",
+          "n_unidades": 34,
+          "n_windows": 28795,
+          "n_temporal_patches": 920699,
+          "n_channel_patches": 16572582,
+          "size_mb": 1061.5
+        },
+        {
+          "dataset": "NB14",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "batteries",
+          "n_unidades": 22,
+          "n_windows": 122014,
+          "n_temporal_patches": 3903934,
+          "n_channel_patches": 11711802,
+          "size_mb": 749.65
+        },
+        {
+          "dataset": "CALCE_CX2",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "batteries",
+          "n_unidades": 6,
+          "n_windows": 11523,
+          "n_temporal_patches": 368583,
+          "n_channel_patches": 4054413,
+          "size_mb": 259.59
+        },
+        {
+          "dataset": "FCLB19",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "batteries",
+          "n_unidades": 138,
+          "n_windows": 5530,
+          "n_temporal_patches": 173448,
+          "n_channel_patches": 1214136,
+          "size_mb": 79.28
+        },
+        {
+          "dataset": "UNIBO21",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "batteries",
+          "n_unidades": 34,
+          "n_windows": 12228,
+          "n_temporal_patches": 390479,
+          "n_channel_patches": 1171437,
+          "size_mb": 75.13
+        }
+      ]
+    },
+    "bearings": {
+      "n_datasets": 12,
+      "n_temporal_patches": 91189988,
+      "n_channel_patches": 297500713,
+      "client_weight_temporal_patches": 0.519468,
+      "client_weight_channel_patches": 0.322436,
+      "datasets": [
+        {
+          "dataset": "IMS",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 3,
+          "n_windows": 929597,
+          "n_temporal_patches": 29747104,
+          "n_channel_patches": 148735520,
+          "size_mb": 9519.07
+        },
+        {
+          "dataset": "XJTU-SY",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 15,
+          "n_windows": 1179633,
+          "n_temporal_patches": 37748256,
+          "n_channel_patches": 75496512,
+          "size_mb": 4831.78
+        },
+        {
+          "dataset": "SEUGB17",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 60,
+          "n_windows": 81880,
+          "n_temporal_patches": 2618880,
+          "n_channel_patches": 20951040,
+          "size_mb": 1341.52
+        },
+        {
+          "dataset": "UPM20",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 135,
+          "n_windows": 210870,
+          "n_temporal_patches": 6744600,
+          "n_channel_patches": 20233800,
+          "size_mb": 1295.59
+        },
+        {
+          "dataset": "PRONOSTIA",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 17,
+          "n_windows": 214913,
+          "n_temporal_patches": 6877216,
+          "n_channel_patches": 13754432,
+          "size_mb": 880.28
+        },
+        {
+          "dataset": "UPM23",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 15,
+          "n_windows": 135930,
+          "n_temporal_patches": 4349400,
+          "n_channel_patches": 13048200,
+          "size_mb": 835.15
+        },
+        {
+          "dataset": "JNUB",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 12,
+          "n_windows": 35190,
+          "n_temporal_patches": 1125726,
+          "n_channel_patches": 2251452,
+          "size_mb": 144.14
+        },
+        {
+          "dataset": "LGB20",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 39,
+          "n_windows": 9580,
+          "n_temporal_patches": 305669,
+          "n_channel_patches": 1222676,
+          "size_mb": 78.48
+        },
+        {
+          "dataset": "KAUG17",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 31,
+          "n_windows": 24211,
+          "n_temporal_patches": 773884,
+          "n_channel_patches": 773884,
+          "size_mb": 49.58
+        },
+        {
+          "dataset": "MFPT",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 17,
+          "n_windows": 14872,
+          "n_temporal_patches": 475455,
+          "n_channel_patches": 475455,
+          "size_mb": 30.46
+        },
+        {
+          "dataset": "UOC18",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 936,
+          "n_windows": 13104,
+          "n_temporal_patches": 390312,
+          "n_channel_patches": 390312,
+          "size_mb": 26.84
+        },
+        {
+          "dataset": "RRB23",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "bearings",
+          "n_unidades": 15,
+          "n_windows": 1057,
+          "n_temporal_patches": 33486,
+          "n_channel_patches": 167430,
+          "size_mb": 10.82
+        }
+      ]
+    },
+    "misc_industrial": {
+      "n_datasets": 5,
+      "n_temporal_patches": 22774011,
+      "n_channel_patches": 62674403,
+      "client_weight_temporal_patches": 0.129733,
+      "client_weight_channel_patches": 0.067928,
+      "datasets": [
+        {
+          "dataset": "PTRB19",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "transformers",
+          "n_unidades": 119,
+          "n_windows": 237881,
+          "n_temporal_patches": 7612192,
+          "n_channel_patches": 45673152,
+          "size_mb": 2923.08
+        },
+        {
+          "dataset": "AC16",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "compressor",
+          "n_unidades": 1800,
+          "n_windows": 351000,
+          "n_temporal_patches": 11183400,
+          "n_channel_patches": 11183400,
+          "size_mb": 718.85
+        },
+        {
+          "dataset": "DFD15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "drills",
+          "n_unidades": 119,
+          "n_windows": 121737,
+          "n_temporal_patches": 3895584,
+          "n_channel_patches": 3895584,
+          "size_mb": 249.32
+        },
+        {
+          "dataset": "CBMv3",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "naval",
+          "n_unidades": 3,
+          "n_windows": 2301,
+          "n_temporal_patches": 73547,
+          "n_channel_patches": 1838675,
+          "size_mb": 117.81
+        },
+        {
+          "dataset": "CESNASA15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "capacitors",
+          "n_unidades": 24,
+          "n_windows": 312,
+          "n_temporal_patches": 9288,
+          "n_channel_patches": 83592,
+          "size_mb": 5.75
+        }
+      ]
+    },
+    "cnc_milling": {
+      "n_datasets": 1,
+      "n_temporal_patches": 154023,
+      "n_channel_patches": 924138,
+      "client_weight_temporal_patches": 0.000877,
+      "client_weight_channel_patches": 0.001002,
+      "datasets": [
+        {
+          "dataset": "NMILL",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "cnc_milling",
+          "n_unidades": 31,
+          "n_windows": 4836,
+          "n_temporal_patches": 154023,
+          "n_channel_patches": 924138,
+          "size_mb": 59.42
+        }
+      ]
+    },
+    "gearboxes": {
+      "n_datasets": 2,
+      "n_temporal_patches": 5911056,
+      "n_channel_patches": 12644136,
+      "client_weight_temporal_patches": 0.033673,
+      "client_weight_channel_patches": 0.013704,
+      "datasets": [
+        {
+          "dataset": "PHMAP21",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "gearboxes",
+          "n_unidades": 27,
+          "n_windows": 181887,
+          "n_temporal_patches": 5819720,
+          "n_channel_patches": 11639440,
+          "size_mb": 745.01
+        },
+        {
+          "dataset": "ARAMIS20",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "gearboxes",
+          "n_unidades": 200,
+          "n_windows": 2992,
+          "n_temporal_patches": 91336,
+          "n_channel_patches": 1004696,
+          "size_mb": 67.4
+        }
+      ]
+    },
+    "hdd": {
+      "n_datasets": 1,
+      "n_temporal_patches": 1567044,
+      "n_channel_patches": 26639748,
+      "client_weight_temporal_patches": 0.008927,
+      "client_weight_channel_patches": 0.028873,
+      "datasets": [
+        {
+          "dataset": "HSF15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "hdd",
+          "n_unidades": 2204,
+          "n_windows": 50692,
+          "n_temporal_patches": 1567044,
+          "n_channel_patches": 26639748,
+          "size_mb": 1764.89
+        }
+      ]
+    },
+    "misc": {
+      "n_datasets": 4,
+      "n_temporal_patches": 12009697,
+      "n_channel_patches": 78198533,
+      "client_weight_temporal_patches": 0.068414,
+      "client_weight_channel_patches": 0.084753,
+      "datasets": [
+        {
+          "dataset": "HIRFNASA15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "misc",
+          "n_unidades": 159,
+          "n_windows": 314788,
+          "n_temporal_patches": 10069546,
+          "n_channel_patches": 70486822,
+          "size_mb": 4512.8
+        },
+        {
+          "dataset": "OBDD17",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "misc",
+          "n_unidades": 12,
+          "n_windows": 59618,
+          "n_temporal_patches": 1907516,
+          "n_channel_patches": 7630064,
+          "size_mb": 488.39
+        },
+        {
+          "dataset": "SSPSNASA15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "misc",
+          "n_unidades": 6,
+          "n_windows": 387,
+          "n_temporal_patches": 12253,
+          "n_channel_patches": 61265,
+          "size_mb": 3.96
+        },
+        {
+          "dataset": "DUS20",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "misc",
+          "n_unidades": 100,
+          "n_windows": 710,
+          "n_temporal_patches": 20382,
+          "n_channel_patches": 20382,
+          "size_mb": 1.45
+        }
+      ]
+    },
+    "phm_challenges": {
+      "n_datasets": 4,
+      "n_temporal_patches": 30599189,
+      "n_channel_patches": 282157436,
+      "client_weight_temporal_patches": 0.17431,
+      "client_weight_channel_patches": 0.305807,
+      "datasets": [
+        {
+          "dataset": "PHM10",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "phm_challenges",
+          "n_unidades": 3,
+          "n_windows": 815073,
+          "n_temporal_patches": 26082261,
+          "n_channel_patches": 208658088,
+          "size_mb": 13354.16
+        },
+        {
+          "dataset": "PHME24",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "phm_challenges",
+          "n_unidades": 48,
+          "n_windows": 112858,
+          "n_temporal_patches": 3610314,
+          "n_channel_patches": 61375338,
+          "size_mb": 3929.26
+        },
+        {
+          "dataset": "PHM15",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "phm_challenges",
+          "n_unidades": 3,
+          "n_windows": 27454,
+          "n_temporal_patches": 878445,
+          "n_channel_patches": 11419785,
+          "size_mb": 730.94
+        },
+        {
+          "dataset": "PPD18",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "phm_challenges",
+          "n_unidades": 10,
+          "n_windows": 888,
+          "n_temporal_patches": 28169,
+          "n_channel_patches": 704225,
+          "size_mb": 45.47
+        }
+      ]
+    },
+    "wind": {
+      "n_datasets": 1,
+      "n_temporal_patches": 52346,
+      "n_channel_patches": 16593682,
+      "client_weight_temporal_patches": 0.000298,
+      "client_weight_channel_patches": 0.017985,
+      "datasets": [
+        {
+          "dataset": "PHM14",
+          "role": "PRETRAIN_SOURCE",
+          "dominio": "wind",
+          "n_unidades": 1702,
+          "n_windows": 2664,
+          "n_temporal_patches": 52346,
+          "n_channel_patches": 16593682,
+          "size_mb": 1729.51
+        }
+      ]
+    }
+  }
+}

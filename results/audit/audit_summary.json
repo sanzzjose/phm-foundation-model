@@ -1,0 +1,504 @@
+{
+  "audit_version": "2.3",
+  "tail_policy": "pad",
+  "tail_policy_decision": {
+    "decision": "pad_global",
+    "source": "tail_policy_comparison.json",
+    "main_reason": "PHM18 TT primary lost 23.2% raw rows under drop",
+    "decided_in_audit_version": "2.3",
+    "diff_artifact": "tail_policy_diff_v22_v23.csv"
+  },
+  "timestamp": "2026-05-20T18:03:35+00:00",
+  "window_size": 512,
+  "stride": 256,
+  "patch_size": 16,
+  "shard_maxcount": 5000,
+  "descargados_ok": 53,
+  "excluidos_phmd": 2,
+  "auditados": 51,
+  "filas_csv": 53,
+  "roles": {
+    "DROP": 4,
+    "EXCLUDED": 2,
+    "PRETRAIN_SOURCE": 36,
+    "TRANSFER_TARGET": 11
+  },
+  "n_clientes_fl": 10,
+  "pesos_cliente": {
+    "aero_engines": {
+      "n_datasets": 1,
+      "n_temporal_patches": 5530406,
+      "n_channel_patches": 110608120,
+      "client_weight_temporal_patches": 0.031504,
+      "client_weight_channel_patches": 0.119879
+    },
+    "batteries": {
+      "n_datasets": 5,
+      "n_temporal_patches": 5757143,
+      "n_channel_patches": 34724370,
+      "client_weight_temporal_patches": 0.032796,
+      "client_weight_channel_patches": 0.037635
+    },
+    "bearings": {
+      "n_datasets": 12,
+      "n_temporal_patches": 91189988,
+      "n_channel_patches": 297500713,
+      "client_weight_temporal_patches": 0.519468,
+      "client_weight_channel_patches": 0.322436
+    },
+    "misc_industrial": {
+      "n_datasets": 5,
+      "n_temporal_patches": 22774011,
+      "n_channel_patches": 62674403,
+      "client_weight_temporal_patches": 0.129733,
+      "client_weight_channel_patches": 0.067928
+    },
+    "cnc_milling": {
+      "n_datasets": 1,
+      "n_temporal_patches": 154023,
+      "n_channel_patches": 924138,
+      "client_weight_temporal_patches": 0.000877,
+      "client_weight_channel_patches": 0.001002
+    },
+    "gearboxes": {
+      "n_datasets": 2,
+      "n_temporal_patches": 5911056,
+      "n_channel_patches": 12644136,
+      "client_weight_temporal_patches": 0.033673,
+      "client_weight_channel_patches": 0.013704
+    },
+    "hdd": {
+      "n_datasets": 1,
+      "n_temporal_patches": 1567044,
+      "n_channel_patches": 26639748,
+      "client_weight_temporal_patches": 0.008927,
+      "client_weight_channel_patches": 0.028873
+    },
+    "misc": {
+      "n_datasets": 4,
+      "n_temporal_patches": 12009697,
+      "n_channel_patches": 78198533,
+      "client_weight_temporal_patches": 0.068414,
+      "client_weight_channel_patches": 0.084753
+    },
+    "phm_challenges": {
+      "n_datasets": 4,
+      "n_temporal_patches": 30599189,
+      "n_channel_patches": 282157436,
+      "client_weight_temporal_patches": 0.17431,
+      "client_weight_channel_patches": 0.305807
+    },
+    "wind": {
+      "n_datasets": 1,
+      "n_temporal_patches": 52346,
+      "n_channel_patches": 16593682,
+      "client_weight_temporal_patches": 0.000298,
+      "client_weight_channel_patches": 0.017985
+    }
+  },
+  "total_temporal_patches_ps": 175544903,
+  "total_channel_patches_ps": 922665279,
+  "total_dense_temporal_patches_ps": 175739968,
+  "total_dense_channel_patches_ps": 934329056,
+  "top_datasets_por_temporal_patches": [
+    {
+      "dataset": "XJTU-SY",
+      "n_temporal_patches": 37748256.0,
+      "dataset_weight_temporal_patches": 0.215035
+    },
+    {
+      "dataset": "IMS",
+      "n_temporal_patches": 29747104.0,
+      "dataset_weight_temporal_patches": 0.169456
+    },
+    {
+      "dataset": "PHM10",
+      "n_temporal_patches": 26082261.0,
+      "dataset_weight_temporal_patches": 0.148579
+    },
+    {
+      "dataset": "AC16",
+      "n_temporal_patches": 11183400.0,
+      "dataset_weight_temporal_patches": 0.063707
+    },
+    {
+      "dataset": "HIRFNASA15",
+      "n_temporal_patches": 10069546.0,
+      "dataset_weight_temporal_patches": 0.057362
+    },
+    {
+      "dataset": "PTRB19",
+      "n_temporal_patches": 7612192.0,
+      "dataset_weight_temporal_patches": 0.043363
+    },
+    {
+      "dataset": "PRONOSTIA",
+      "n_temporal_patches": 6877216.0,
+      "dataset_weight_temporal_patches": 0.039176
+    },
+    {
+      "dataset": "UPM20",
+      "n_temporal_patches": 6744600.0,
+      "dataset_weight_temporal_patches": 0.038421
+    },
+    {
+      "dataset": "PHMAP21",
+      "n_temporal_patches": 5819720.0,
+      "dataset_weight_temporal_patches": 0.033152
+    },
+    {
+      "dataset": "NCMAPSS",
+      "n_temporal_patches": 5530406.0,
+      "dataset_weight_temporal_patches": 0.031504
+    }
+  ],
+  "top_datasets_por_channel_patches": [
+    {
+      "dataset": "PHM10",
+      "n_channel_patches": 208658088.0,
+      "dataset_weight_channel_patches": 0.226147
+    },
+    {
+      "dataset": "IMS",
+      "n_channel_patches": 148735520.0,
+      "dataset_weight_channel_patches": 0.161202
+    },
+    {
+      "dataset": "NCMAPSS",
+      "n_channel_patches": 110608120.0,
+      "dataset_weight_channel_patches": 0.119879
+    },
+    {
+      "dataset": "XJTU-SY",
+      "n_channel_patches": 75496512.0,
+      "dataset_weight_channel_patches": 0.081824
+    },
+    {
+      "dataset": "HIRFNASA15",
+      "n_channel_patches": 70486822.0,
+      "dataset_weight_channel_patches": 0.076395
+    },
+    {
+      "dataset": "PHME24",
+      "n_channel_patches": 61375338.0,
+      "dataset_weight_channel_patches": 0.06652
+    },
+    {
+      "dataset": "PTRB19",
+      "n_channel_patches": 45673152.0,
+      "dataset_weight_channel_patches": 0.049501
+    },
+    {
+      "dataset": "HSF15",
+      "n_channel_patches": 26639748.0,
+      "dataset_weight_channel_patches": 0.028873
+    },
+    {
+      "dataset": "SEUGB17",
+      "n_channel_patches": 20951040.0,
+      "dataset_weight_channel_patches": 0.022707
+    },
+    {
+      "dataset": "UPM20",
+      "n_channel_patches": 20233800.0,
+      "dataset_weight_channel_patches": 0.02193
+    }
+  ],
+  "top_datasets_por_dense_channel_patches": [
+    {
+      "dataset": "PHM10",
+      "n_dense_channel_patches": 208658688.0,
+      "invalid_patch_ratio": 0.0
+    },
+    {
+      "dataset": "IMS",
+      "n_dense_channel_patches": 148735520.0,
+      "invalid_patch_ratio": 0.0
+    },
+    {
+      "dataset": "NCMAPSS",
+      "n_dense_channel_patches": 110636160.0,
+      "invalid_patch_ratio": 0.0003
+    },
+    {
+      "dataset": "XJTU-SY",
+      "n_dense_channel_patches": 75496512.0,
+      "invalid_patch_ratio": 0.0
+    },
+    {
+      "dataset": "HIRFNASA15",
+      "n_dense_channel_patches": 70512512.0,
+      "invalid_patch_ratio": 0.0004
+    },
+    {
+      "dataset": "PHME24",
+      "n_dense_channel_patches": 61394752.0,
+      "invalid_patch_ratio": 0.0003
+    },
+    {
+      "dataset": "PTRB19",
+      "n_dense_channel_patches": 45673152.0,
+      "invalid_patch_ratio": 0.0
+    },
+    {
+      "dataset": "HSF15",
+      "n_dense_channel_patches": 27576448.0,
+      "invalid_patch_ratio": 0.034
+    },
+    {
+      "dataset": "PHM14",
+      "n_dense_channel_patches": 27023616.0,
+      "invalid_patch_ratio": 0.386
+    },
+    {
+      "dataset": "SEUGB17",
+      "n_dense_channel_patches": 20961280.0,
+      "invalid_patch_ratio": 0.0005
+    }
+  ],
+  "top_datasets_por_size_mb": [
+    {
+      "dataset": "PHM10",
+      "estimated_size_mb": 13354.16
+    },
+    {
+      "dataset": "IMS",
+      "estimated_size_mb": 9519.07
+    },
+    {
+      "dataset": "NCMAPSS",
+      "estimated_size_mb": 7080.71
+    },
+    {
+      "dataset": "XJTU-SY",
+      "estimated_size_mb": 4831.78
+    },
+    {
+      "dataset": "HIRFNASA15",
+      "estimated_size_mb": 4512.8
+    },
+    {
+      "dataset": "PHME24",
+      "estimated_size_mb": 3929.26
+    },
+    {
+      "dataset": "PTRB19",
+      "estimated_size_mb": 2923.08
+    },
+    {
+      "dataset": "HSF15",
+      "estimated_size_mb": 1764.89
+    },
+    {
+      "dataset": "PHM14",
+      "estimated_size_mb": 1729.51
+    },
+    {
+      "dataset": "SEUGB17",
+      "estimated_size_mb": 1341.52
+    }
+  ],
+  "umbral_dominancia_cliente": 0.6,
+  "sampling_policy": {
+    "level": "dataset_and_client_balanced",
+    "base_weight": "n_channel_patches",
+    "cap_max_dataset_weight": 0.1,
+    "cap_max_client_weight": 0.25,
+    "min_client_presence": 0.005,
+    "notes": "Valores iniciales para el sampler de pretraining; ajustables tras inspeccion de batches reales. Limita PHM10 (~22.7% del corpus en channel patches) y evita que cnc_milling (~0.10%) desaparezca del entrenamiento federado. Centralizado y federado deben usar politicas equivalentes para que la comparacion sea justa."
+  },
+  "sampling_rate_info": {
+    "relevant_count": 47,
+    "known_count": 1,
+    "unknown_count": 46,
+    "unknown_datasets": [
+      "AC16",
+      "ARAMIS20",
+      "CALCE_CS2",
+      "CALCE_CX2",
+      "CBM14",
+      "CBMv3",
+      "CESNASA15",
+      "CMAPSS",
+      "CNCMILL18",
+      "CWRU",
+      "DFD15",
+      "DUS20",
+      "FCLB19",
+      "HIRFNASA15",
+      "HSF15",
+      "HSG18",
+      "IEEE14",
+      "IMS",
+      "JNUB",
+      "KAUG17",
+      "LGB20",
+      "MFPT",
+      "NB1",
+      "NB14",
+      "NCMAPSS",
+      "NMILL",
+      "OBDD17",
+      "PBCP16",
+      "PHM10",
+      "PHM14",
+      "PHM15",
+      "PHM18",
+      "PHMAP21",
+      "PHMAP23",
+      "PHME20",
+      "PPD18",
+      "PRONOSTIA",
+      "PTRB19",
+      "RRB23",
+      "SEUGB17",
+      "SSPSNASA15",
+      "UNIBO21",
+      "UOC18",
+      "UPM20",
+      "UPM23",
+      "XJTU-SY"
+    ],
+    "inferred_provisional_datasets": [
+      "PHME24"
+    ],
+    "note": "W=512 son muestras, no duracion fisica. Los datasets en inferred_provisional_datasets tienen sampling_rate calculado a partir de deltas temporales pero no se han validado los checks de monotonicidad pre/post ordenamiento exigidos en CLAUDE.md sec.5. Tratar como provisional."
+  },
+  "advertencias": [
+    {
+      "tipo": "class_balance_bajo",
+      "dataset": "AHU21",
+      "detalle": "balance_clases=0.0063 (< 0.05)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "PBHP16",
+      "detalle": "padding_ratio=0.2317 (> 0.15)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "MOSFET11",
+      "detalle": "padding_ratio=0.998 (> 0.15)"
+    },
+    {
+      "tipo": "negative_target_values",
+      "dataset": "UNIBO21",
+      "detalle": "target_min=-1.2494 (target tipo_target=regression, no es RUL)"
+    },
+    {
+      "tipo": "class_balance_bajo",
+      "dataset": "CESNASA15",
+      "detalle": "balance_clases=0.0038 (< 0.05)"
+    },
+    {
+      "tipo": "class_balance_bajo",
+      "dataset": "ARAMIS20",
+      "detalle": "balance_clases=0.0419 (< 0.05)"
+    },
+    {
+      "tipo": "dataset_dominante",
+      "dataset": "PHM10",
+      "detalle": "22.6% del corpus (channel patches)"
+    },
+    {
+      "tipo": "class_balance_bajo",
+      "dataset": "PHM14",
+      "detalle": "balance_clases=0.0305 (< 0.05)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "PHM14",
+      "detalle": "padding_ratio=0.3951 (> 0.15)"
+    },
+    {
+      "tipo": "rul_negative_values",
+      "dataset": "CMAPSS",
+      "detalle": "rul_min=-466.0 (target tipo_target=rul)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "CMAPSS",
+      "detalle": "padding_ratio=0.6346 (> 0.15)"
+    },
+    {
+      "tipo": "tt_padding_alto",
+      "dataset": "CMAPSS",
+      "detalle": "padding_ratio=0.6346 > 0.5 con W=512"
+    },
+    {
+      "tipo": "tt_median_lt_window",
+      "dataset": "CMAPSS",
+      "detalle": "len_mediana=184.0 < W=512"
+    },
+    {
+      "tipo": "tt_n_windows_bajo",
+      "dataset": "CNCMILL18",
+      "detalle": "91 ventanas (< 100)"
+    },
+    {
+      "tipo": "class_balance_bajo",
+      "dataset": "PHMAP23",
+      "detalle": "balance_clases=0.0286 (< 0.05)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "PHMAP23",
+      "detalle": "padding_ratio=0.1636 (> 0.15)"
+    },
+    {
+      "tipo": "tail_policy_pad_padding_moderado",
+      "dataset": "PHMAP23",
+      "detalle": "padding_ratio=0.1636 en (0.15, 0.5] con tail_policy='pad' (TT). Aceptado porque valid_time_mask y valid_patch_mask forman parte del contrato."
+    },
+    {
+      "tipo": "tt_n_units_bajo",
+      "dataset": "IEEE14",
+      "detalle": "3 unidades (< 5)"
+    },
+    {
+      "tipo": "tt_n_windows_bajo",
+      "dataset": "CBM14",
+      "detalle": "44 ventanas (< 100)"
+    },
+    {
+      "tipo": "tt_n_units_bajo",
+      "dataset": "CBM14",
+      "detalle": "3 unidades (< 5)"
+    },
+    {
+      "tipo": "padding_ratio_alto",
+      "dataset": "PHM18",
+      "detalle": "padding_ratio=0.1823 (> 0.15)"
+    },
+    {
+      "tipo": "tail_policy_pad_padding_moderado",
+      "dataset": "PHM18",
+      "detalle": "padding_ratio=0.1823 en (0.15, 0.5] con tail_policy='pad' (TT). Aceptado porque valid_time_mask y valid_patch_mask forman parte del contrato."
+    },
+    {
+      "tipo": "cliente_pequeno_temporal",
+      "cliente": "cnc_milling",
+      "detalle": "0.088% del corpus (temporal patches)"
+    },
+    {
+      "tipo": "cliente_pequeno_channel",
+      "cliente": "cnc_milling",
+      "detalle": "0.100% del corpus (channel patches)"
+    },
+    {
+      "tipo": "cliente_pequeno_temporal",
+      "cliente": "hdd",
+      "detalle": "0.893% del corpus (temporal patches)"
+    },
+    {
+      "tipo": "cliente_pequeno_temporal",
+      "cliente": "wind",
+      "detalle": "0.030% del corpus (temporal patches)"
+    }
+  ],
+  "pendientes_revision_temporal": [
+    "monotonicidad_en_orden_original",
+    "monotonicidad_tras_ordenar",
+    "sampling_rate_inferido_tras_ordenar"
+  ]
+}
