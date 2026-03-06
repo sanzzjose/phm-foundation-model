@@ -1,0 +1,2 @@
+client,n_datasets,n_units,n_windows_total,n_temporal_patches,n_channel_patches,n_dense_temporal_patches,n_dense_channel_patches,actual_size_mb_total,w_temp_pct,w_chan_pct
+misc,1,100,710,20382,20382,22720,22720,13.47,100.0,100.0
