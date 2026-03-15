@@ -1,0 +1,68 @@
+# Config de smoke test del SSL pretraining centralizado.
+#
+# Objetivo: verificar end-to-end que el pipeline funciona con datasets
+# pequenos, batch_size minimo y muy pocos steps. NO es training real.
+#
+# Datasets escogidos por tamano pequeno y representatividad:
+#   - DUS20         (misc)            ~20 MB
+#   - SSPSNASA15    (misc)            varia
+#   - CESNASA15     (misc_industrial) ~11 MB
+#   - RRB23         (bearings)        varia
+#   - NMILL         (cnc_milling)     ~142 MB
+#
+# Todos PRETRAIN_SOURCE. Ningun TRANSFER_TARGET en este smoke.
+
+run_name: ssl_smoke_patchtst_phm
+seed: 42
+
+model:
+  name: patchtst_phm_tiny
+  d_model: 64
+  n_layers: 2
+  n_heads: 4
+  d_ff: 256
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 8
+  # Politica de muestreo SOLO para smoke. Opciones:
+  #   round_robin (default): alterna los 5 datasets en orden, reabriendo
+  #     iteradores si se agotan. Garantiza que los 5 se vean en pocos steps.
+  #   uniform: muestreo uniforme entre los 5.
+  #   weighted: usa los final_dataset_weight productivos, renormalizados.
+  #     Util solo si se quiere medir politica productiva sobre el subset.
+  smoke_sampling_strategy: round_robin
+  smoke_datasets:
+    - DUS20
+    - SSPSNASA15
+    - CESNASA15
+    - RRB23
+    - NMILL
+
+training:
+  max_steps: 50
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+  log_every: 5
+  checkpoint_every: 50
+
+paths:
+  # Las rutas se resuelven en runtime. processed_root y outputs por defecto
+  # apuntan a Drive cuando se ejecuta en Colab.
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_smoke
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
