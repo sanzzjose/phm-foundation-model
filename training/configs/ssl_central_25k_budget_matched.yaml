@@ -1,0 +1,78 @@
+# Pretraining SSL central budget-matched a 25.000 optimizer steps (Fase 4b).
+#
+# Comparacion budget-matched principal: central_25k vs fedavg_50x50 (este
+# ultimo = 50 rondas x 50 steps locales x 10 clientes = 25.000 local steps).
+#
+# Receta: identica a ssl_central_full salvo:
+#   - max_steps: 100000 -> 25000.
+#   - warmup_steps: 2000 -> 500 (mismo ratio 2% de los total steps que el
+#     pilot 5k usaba; ratio coherente).
+#   - checkpoint_every: 5000 -> 2500 (10 checkpoints en el run).
+#   - distribution_log_every: 2500 -> 1250.
+#   - log_every: 100 -> 50 (mismo numero aprox. de logs).
+#   - paths.checkpoint_dir / paths.log_dir: subdirectorio dedicado para no
+#     colisionar con ssl_central_full.
+#
+# Resto idéntico (modelo base 801.808 params, mask_ratio=0.3, W=512/P=16,
+# adaptive_by_channels cap 512, sampling weighted con caps audit v2.3,
+# min_dataset_presence=0.001 para cobertura de los 36 PS).
+#
+# Nota sobre reuso del snapshot intermedio: en `ssl_central_full` existe
+# `ckpt_step025000.pt` (snapshot a step 25.000 del run de 100k). NO es
+# bit-perfect comparable a esta config porque ese snapshot esta a mitad del
+# cosine schedule planeado para 100k. Si se quiere una comparacion 100%
+# bit-perfect, ejecutar este config dedicado (~50 min en A100).
+#
+# NO LANZAR sin autorizacion explicita en Colab GPU.
+
+run_name: ssl_central_25k_budget_matched_patchtst_phm
+seed: 42
+
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  sampling_strategy: weighted
+  require_all_datasets_seen: false
+  min_dataset_presence: 0.001
+
+training:
+  max_steps: 25000
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  warmup_steps: 500
+  schedule: cosine
+  amp: auto
+  log_every: 50
+  checkpoint_every: 2500
+  distribution_log_every: 1250
+  resume_from: null
+
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_25k_budget_matched
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
