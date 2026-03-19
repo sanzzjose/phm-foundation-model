@@ -1,0 +1,64 @@
+# Config PLACEHOLDER del pretraining SSL centralizado real sobre los 36
+# PRETRAIN_SOURCE. NO se ejecuta. El CLI --mode train sigue bloqueado.
+#
+# Antes de habilitar y ejecutar:
+#   1. smoke PASS en Colab con `--mode smoke --config ssl_smoke.yaml`.
+#   2. inspeccion manual de `metrics.jsonl` y `run_info.json` del smoke.
+#   3. revision de VRAM disponible (A100 / T4 / CPU) para batch_size real.
+#   4. decision de `max_steps` piloto: TBD tras saber cuantos batches por
+#      epoca produce el sampler con `final_dataset_weight`.
+#   5. validacion de resume desde checkpoint.
+#
+# Diferencias con smoke:
+#   - todos los 36 PRETRAIN_SOURCE, no un subset.
+#   - modelo `base` (~801,808 parametros entrenables, verificado).
+#   - estrategia de muestreo `weighted` (politica productiva con caps).
+
+run_name: ssl_central_base_patchtst_phm
+seed: 42
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 32
+  # En --mode train la estrategia productiva es 'weighted' con caps:
+  #   cap_max_dataset_weight = 0.10
+  #   cap_max_client_weight  = 0.25
+  #   min_client_presence    = 0.005
+  # Ver `training/sampling.py` para el detalle del water-filling.
+  # smoke_datasets / smoke_sampling_strategy se ignoran en train.
+
+training:
+  # max_steps piloto = TBD. Provisionalmente 50000 como estimacion de ~50
+  # epocas equivalentes; ajustar tras inspeccionar batches del smoke.
+  max_steps: 50000
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  warmup_steps: 1000
+  amp: auto
+  log_every: 50
+  checkpoint_every: 2000
+
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_base
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
