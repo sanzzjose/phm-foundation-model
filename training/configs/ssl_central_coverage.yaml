@@ -1,0 +1,65 @@
+# Coverage smoke del central sobre los 36 PRETRAIN_SOURCE.
+#
+# Objetivo: validar que el pipeline central abre AL MENOS 1 batch real por
+# cada uno de los 36 datasets PS sin OOM. NO es entrenamiento real:
+#   - max_steps=72 (= 2 pasadas en round_robin sobre 36 datasets).
+#   - lr fijo, sin warmup ni schedule sofisticado.
+#   - estrategia 'round_robin' para cobertura uniforme (no productiva).
+#   - batch_size_policy 'adaptive_by_channels' con max_channel_batch=512.
+#
+# Sirve como gating duro entre el smoke pequeno (5 datasets) y el piloto
+# weighted (`ssl_central_pilot.yaml`). Solo si este coverage pasa con los
+# 36 datasets se autoriza el piloto weighted.
+
+run_name: ssl_central_coverage_patchtst_phm
+seed: 42
+
+# Stage anotado: el CLI usa esto para validar que solo se permite el modo
+# train cuando la stage es 'coverage' o 'pilot'.
+stage: coverage
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  sampling_strategy: round_robin
+  require_all_datasets_seen: true
+
+training:
+  # 36 datasets x 2 pasadas. Con round_robin garantizamos que cada PS se ve
+  # al menos 2 veces. Aceptable si la inspeccion empirica del coverage
+  # confirma compatibilidad VRAM.
+  max_steps: 72
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  warmup_steps: 0
+  amp: auto
+  log_every: 6
+  checkpoint_every: 72
+
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_coverage
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
