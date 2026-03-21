@@ -1,0 +1,80 @@
+# Pretraining SSL central full sobre los 36 PRETRAIN_SOURCE.
+#
+# Prerequisitos cumplidos antes de habilitar este config:
+#   - Audit v2.3 + Full v0.5 harmonization: CERRADO / PASS.
+#   - Smoke 5 datasets: CERRADO / PASS.
+#   - Central coverage (36 PS, 72 steps): CERRADO / PASS.
+#   - Central piloto weighted (5000 steps): CERRADO / PASS con loss
+#     descendiendo 25.2% y distribucion empirica dentro de +-0.007 vs
+#     caps del audit v2.3.
+#
+# Decisiones de hiperparametros:
+#   - max_steps=100000 (cap del CLI: 500000). En A100 ~3.5-4 h.
+#   - modelo `base` (~801,808 parametros), ya validado en pilot.
+#   - lr=3e-4 + warmup 2000 (2% de total) + cosine, como en pilot.
+#   - batch_size 32 + adaptive_by_channels con max_channel_batch=512.
+#   - sampling_strategy='weighted' productivo + caps cerrados del audit v2.3.
+#   - min_dataset_presence=0.001 (nuevo) para garantizar cobertura minima
+#     de los 36 datasets (en pilot 5000 steps, SSPSNASA15 y DUS20 quedaron
+#     fuera por sus pesos minusculos; con 100k steps y piso 0.001 cada
+#     dataset tendra al menos ~100 steps).
+#   - log_every=100 (1 linea por ~14 s en A100, manejable).
+#   - checkpoint_every=5000 (20 checkpoints + final).
+#   - distribution_log_every=2500 (40 snapshots de distribucion empirica).
+#
+# Background execution en Colab Pro+ soporta hasta 24 h, asi que el run
+# completo de ~4 h en A100 no requiere supervision activa.
+
+run_name: ssl_central_full_patchtst_phm
+seed: 42
+
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  sampling_strategy: weighted
+  require_all_datasets_seen: false
+  # Piso por dataset (nuevo): garantiza cobertura minima de los 36 PS.
+  # Con 100k steps y piso 0.001 -> >= 100 steps por dataset esperados.
+  min_dataset_presence: 0.001
+
+training:
+  max_steps: 100000
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  warmup_steps: 2000
+  schedule: cosine
+  amp: auto
+  log_every: 100
+  checkpoint_every: 5000
+  distribution_log_every: 2500
+  resume_from: null
+
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
