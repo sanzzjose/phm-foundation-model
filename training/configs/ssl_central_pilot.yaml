@@ -1,0 +1,70 @@
+# Piloto del pretraining central weighted sobre los 36 PRETRAIN_SOURCE.
+#
+# NO ejecutar sin autorizacion explicita. El CLI exige stage=pilot para
+# desbloquear cmd_train con esta config. Aun asi se aplica:
+#   - max_steps <= 10000 (gating duro).
+#   - sampling_strategy='weighted' productivo.
+#   - batch_size_policy='adaptive_by_channels' con cap por canales.
+#   - scheduler linear warmup + cosine decay.
+#   - reporte periodico de distribucion empirica vs esperada por
+#     dataset y por cliente.
+#
+# Prerequisitos:
+#   1. ssl_central_coverage PASS en Colab.
+#   2. Inspeccion manual de metrics.jsonl y run_info.json del coverage.
+#   3. Confirmar VRAM disponible (A100/T4) para batch_size adaptativo.
+#   4. Acuerdo explicito sobre max_steps piloto.
+
+run_name: ssl_central_pilot_patchtst_phm
+seed: 42
+
+# Stage anotado: 'pilot' permite cmd_train con max_steps <= 10000.
+stage: pilot
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  objective: masked_patch_prediction
+  mask_ratio: 0.3
+  dynamic_masking: true
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_policy: por_dataset
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  sampling_strategy: weighted
+  require_all_datasets_seen: false
+
+training:
+  # Piloto: 5000 optimizer steps. Cap duro en CLI: el modo train rechaza
+  # cualquier config con stage in {coverage, pilot} y max_steps > 10000.
+  max_steps: 5000
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  warmup_steps: 500
+  schedule: cosine          # opciones: 'cosine' | 'constant'
+  amp: auto
+  log_every: 25
+  checkpoint_every: 500
+  distribution_log_every: 250
+  resume_from: null         # ruta a ckpt para reanudar
+
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_pilot
+  log_dir:        /content/drive/MyDrive/fm_fl_phmd/logs/pretraining
+  sampling_plan_out: results/pretraining/ssl_sampling_plan.csv
