@@ -1,0 +1,307 @@
+{
+  "run_name": "ssl_central_full_patchtst_phm",
+  "git_hash": "b3767b9268fdec22489129fe428eff820382b98e",
+  "git_dirty": true,
+  "config_hash": "9ed84508a6820265",
+  "param_count": 801808,
+  "stage": "full",
+  "optimizer_steps": 99961,
+  "skipped_steps": 0,
+  "amp_overflow_steps": 39,
+  "amp_nonfinite_grad_steps": null,
+  "datasets_seen_count": 36,
+  "clients_seen_count": 10,
+  "max_effective_bc": 510,
+  "elapsed_seconds": 12875.8,
+  "total_metric_lines": 100040,
+  "total_step_records": 100000,
+  "total_distribution_records": 40,
+  "nonfinite_grad_steps_total": 39,
+  "nonfinite_grad_by_kind": {
+    "inf": 37,
+    "nan": 2
+  },
+  "nonfinite_grad_by_dataset": {
+    "NCMAPSS": 1,
+    "NB14": 7,
+    "AC16": 6,
+    "CBMv3": 1,
+    "UPM20": 2,
+    "PHM14": 7,
+    "UNIBO21": 5,
+    "HSF15": 3,
+    "DFD15": 3,
+    "PHME24": 2,
+    "IMS": 1,
+    "UOC18": 1
+  },
+  "huge_loss_threshold": 1000.0,
+  "huge_finite_loss_steps": [
+    {
+      "step": 28003,
+      "dataset": "PHM14",
+      "loss": 3147966.0
+    },
+    {
+      "step": 78176,
+      "dataset": "PHM14",
+      "loss": 3147966.0
+    }
+  ],
+  "top_loss_steps": [
+    {
+      "step": 28003,
+      "dataset": "PHM14",
+      "loss": 3147966.0
+    },
+    {
+      "step": 78176,
+      "dataset": "PHM14",
+      "loss": 3147966.0
+    },
+    {
+      "step": 1,
+      "dataset": "PTRB19",
+      "loss": 1.348537564277649
+    },
+    {
+      "step": 4,
+      "dataset": "XJTU-SY",
+      "loss": 1.315366268157959
+    },
+    {
+      "step": 8,
+      "dataset": "XJTU-SY",
+      "loss": 1.3099052906036377
+    },
+    {
+      "step": 10,
+      "dataset": "PTRB19",
+      "loss": 1.3087719678878784
+    },
+    {
+      "step": 5,
+      "dataset": "PRONOSTIA",
+      "loss": 1.3057883977890015
+    },
+    {
+      "step": 23,
+      "dataset": "HSF15",
+      "loss": 1.2949795722961426
+    },
+    {
+      "step": 2,
+      "dataset": "SEUGB17",
+      "loss": 1.2943871021270752
+    },
+    {
+      "step": 14,
+      "dataset": "PTRB19",
+      "loss": 1.2897359132766724
+    },
+    {
+      "step": 9,
+      "dataset": "PHMAP21",
+      "loss": 1.2751598358154297
+    },
+    {
+      "step": 18,
+      "dataset": "XJTU-SY",
+      "loss": 1.272580623626709
+    },
+    {
+      "step": 19,
+      "dataset": "UPM20",
+      "loss": 1.2652397155761719
+    },
+    {
+      "step": 15,
+      "dataset": "PHMAP21",
+      "loss": 1.2554817199707031
+    },
+    {
+      "step": 16,
+      "dataset": "PRONOSTIA",
+      "loss": 1.2483420372009277
+    },
+    {
+      "step": 29,
+      "dataset": "HSF15",
+      "loss": 1.2349379062652588
+    },
+    {
+      "step": 26,
+      "dataset": "NB14",
+      "loss": 1.226183533668518
+    },
+    {
+      "step": 25,
+      "dataset": "XJTU-SY",
+      "loss": 1.2178980112075806
+    },
+    {
+      "step": 17,
+      "dataset": "NCMAPSS",
+      "loss": 1.211600661277771
+    },
+    {
+      "step": 38,
+      "dataset": "PTRB19",
+      "loss": 1.2044810056686401
+    }
+  ],
+  "loss_buckets": [
+    {
+      "range": "0-2000",
+      "lo": 0,
+      "hi": 2000,
+      "count": 1999,
+      "mean": 0.7974454869514797,
+      "median": 0.8305096626281738,
+      "p10": 0.5581797957420349,
+      "p90": 1.009938383102417,
+      "min": 0.004100716207176447,
+      "max": 1.348537564277649,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.7974454869514797,
+      "count_clean": 1999
+    },
+    {
+      "range": "2000-7000",
+      "lo": 2000,
+      "hi": 7000,
+      "count": 5000,
+      "mean": 0.6503713084561518,
+      "median": 0.7097791731357574,
+      "p10": 0.1733075976371765,
+      "p90": 0.9947149813175201,
+      "min": 0.0012794776121154428,
+      "max": 1.1656734943389893,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.6503713084561518,
+      "count_clean": 5000
+    },
+    {
+      "range": "7000-12000",
+      "lo": 7000,
+      "hi": 12000,
+      "count": 5000,
+      "mean": 0.576033732567681,
+      "median": 0.5694997906684875,
+      "p10": 0.08814552053809166,
+      "p90": 0.9820012867450715,
+      "min": 0.0015202860813587904,
+      "max": 1.1403875350952148,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.576033732567681,
+      "count_clean": 5000
+    },
+    {
+      "range": "22000-27000",
+      "lo": 22000,
+      "hi": 27000,
+      "count": 5000,
+      "mean": 0.46280569076888495,
+      "median": 0.4444841593503952,
+      "p10": 0.05911592617630959,
+      "p90": 0.8226184844970703,
+      "min": 0.0006759784300811589,
+      "max": 1.0913000106811523,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.46280569076888495,
+      "count_clean": 5000
+    },
+    {
+      "range": "47000-52000",
+      "lo": 47000,
+      "hi": 52000,
+      "count": 5000,
+      "mean": 0.4115220627757721,
+      "median": 0.4547939747571945,
+      "p10": 0.04607647880911827,
+      "p90": 0.7315084278583527,
+      "min": 0.0003997320309281349,
+      "max": 1.0062090158462524,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.4115220627757721,
+      "count_clean": 5000
+    },
+    {
+      "range": "72000-77000",
+      "lo": 72000,
+      "hi": 77000,
+      "count": 5000,
+      "mean": 0.41904672106335056,
+      "median": 0.4399383068084717,
+      "p10": 0.04700418189167977,
+      "p90": 0.7371840119361879,
+      "min": 0.00032017886405810714,
+      "max": 1.1403484344482422,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.41904672106335056,
+      "count_clean": 5000
+    },
+    {
+      "range": "95000-100000",
+      "lo": 95000,
+      "hi": 100000,
+      "count": 5000,
+      "mean": 0.41671667792199296,
+      "median": 0.4391029477119446,
+      "p10": 0.043263503536581996,
+      "p90": 0.7434264302253726,
+      "min": 0.0002876997459679842,
+      "max": 1.017524242401123,
+      "mean_excluding_nonfinite_grad_or_not_applied": 0.41671667792199296,
+      "count_clean": 5000
+    }
+  ],
+  "final_client_distribution_observed": {
+    "misc_industrial": 11353,
+    "bearings": 25040,
+    "phm_challenges": 24482,
+    "misc": 12495,
+    "gearboxes": 2346,
+    "aero_engines": 9839,
+    "hdd": 4800,
+    "batteries": 6164,
+    "wind": 2943,
+    "cnc_milling": 499
+  },
+  "final_dataset_distribution_observed": {
+    "PTRB19": 8204,
+    "SEUGB17": 2662,
+    "PHME24": 10020,
+    "XJTU-SY": 7828,
+    "PRONOSTIA": 1705,
+    "HIRFNASA15": 9791,
+    "OBDD17": 2505,
+    "PHMAP21": 2149,
+    "IMS": 7854,
+    "NCMAPSS": 9839,
+    "UPM20": 2497,
+    "PHM10": 9974,
+    "HSF15": 4800,
+    "NB14": 2071,
+    "NB1": 2923,
+    "AC16": 1994,
+    "PHM14": 2943,
+    "CBMv3": 330,
+    "CALCE_CX2": 745,
+    "UPM23": 1659,
+    "KAUG17": 104,
+    "FCLB19": 233,
+    "PHM15": 4227,
+    "ARAMIS20": 197,
+    "DFD15": 721,
+    "PPD18": 261,
+    "NMILL": 499,
+    "JNUB": 283,
+    "UOC18": 99,
+    "RRB23": 107,
+    "DUS20": 112,
+    "MFPT": 95,
+    "LGB20": 147,
+    "UNIBO21": 192,
+    "SSPSNASA15": 87,
+    "CESNASA15": 104
+  },
+  "checkpoint_state_dict_all_finite": true,
+  "checkpoint_nonfinite_tensors": [],
+  "checkpoint_warning": null,
+  "conclusion": "checkpoint usable; logging/robustness fixes recomendados para futuros runs (JSONL estricto, grad_norm null en steps con AMP overflow, final_client_weight coherente con groupby)."
+}
