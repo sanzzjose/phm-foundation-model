@@ -1,0 +1,99 @@
+{
+  "ts": "2026-05-22T11:11:36",
+  "mode": "smoke",
+  "run_name": "ssl_smoke_patchtst_phm",
+  "seed": 42,
+  "git_hash": "3de700cdf573535a9a19856a1999d24ecaf8e020",
+  "git_dirty": true,
+  "config_hash": "46628aedb05becd6",
+  "param_count": 104336,
+  "smoke_sampling_strategy": "round_robin",
+  "datasets": [
+    "CESNASA15",
+    "DUS20",
+    "NMILL",
+    "RRB23",
+    "SSPSNASA15"
+  ],
+  "clients": [
+    "bearings",
+    "cnc_milling",
+    "misc",
+    "misc_industrial"
+  ],
+  "model": {
+    "name": "patchtst_phm_tiny",
+    "d_model": 64,
+    "n_layers": 2,
+    "n_heads": 4,
+    "d_ff": 256,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "ssl": {
+    "objective": "masked_patch_prediction",
+    "mask_ratio": 0.3,
+    "dynamic_masking": true,
+    "loss": "mse"
+  },
+  "data": {
+    "role": "PRETRAIN_SOURCE",
+    "split": "train",
+    "batch_policy": "por_dataset",
+    "batch_size": 8,
+    "smoke_sampling_strategy": "round_robin",
+    "smoke_datasets": [
+      "DUS20",
+      "SSPSNASA15",
+      "CESNASA15",
+      "RRB23",
+      "NMILL"
+    ]
+  },
+  "training": {
+    "max_steps": 50,
+    "lr": 0.0003,
+    "weight_decay": 0.05,
+    "grad_clip_norm": 1.0,
+    "amp": "auto",
+    "log_every": 5,
+    "checkpoint_every": 50
+  },
+  "datasets_seen": {
+    "CESNASA15": 10,
+    "DUS20": 10,
+    "NMILL": 10,
+    "RRB23": 10,
+    "SSPSNASA15": 10
+  },
+  "clients_seen": {
+    "misc_industrial": 10,
+    "misc": 20,
+    "cnc_milling": 10,
+    "bearings": 10
+  },
+  "steps_per_dataset": {
+    "CESNASA15": 10,
+    "DUS20": 10,
+    "NMILL": 10,
+    "RRB23": 10,
+    "SSPSNASA15": 10
+  },
+  "optimizer_steps": 50,
+  "skipped_steps": 0,
+  "any_padding_ignored_elements": true,
+  "partial_padding_diagnostic": {
+    "result": "pass",
+    "dataset": "CESNASA15",
+    "sample_key": "CESNASA15__subset-none__split-train__unit-ES10C2_w000012",
+    "n_inspected": 13,
+    "n_partial_patches_in_sample": 1,
+    "n_forced_masked": 9,
+    "loss": 2.1877238750457764,
+    "n_loss_elements": 54,
+    "padding_ignored_elements": 90
+  },
+  "smoke_pass": true,
+  "elapsed_seconds": 11.6
+}
