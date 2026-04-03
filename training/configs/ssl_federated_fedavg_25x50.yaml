@@ -1,0 +1,60 @@
+# SSL federado escalado FedAvg 25x50 (Fase 4a del plan maestro).
+# 25 rondas x 50 steps locales x 10 clientes = 12 500 local steps totales.
+# Cap stage=pilot: 20 000 local steps -> 12 500 < 20 000, pasa el gating.
+#
+# Es el primer escalado federado por encima del pilot 10x50 (5 000 steps).
+# Mismos 36 PRETRAIN_SOURCE, misma topologia de 10 clientes, misma receta
+# PatchTSTPhm base, mismo contrato W=512/P=16, mask_ratio=0.3, mismo sampler
+# weighted con caps audit v2.3 (final_client_weight). Unica diferencia frente
+# al pilot FedAvg: n_rounds 10 -> 25.
+#
+# NO LANZAR sin autorizacion explicita en Colab GPU. El trainer respeta el
+# gating duro por stage; este YAML solo documenta los hyperparams.
+
+run_name: ssl_federated_fedavg_25x50_patchtst_phm
+seed: 42
+stage: pilot
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavg
+  fedprox_mu: null
+  n_rounds: 25
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 5
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavg_25x50
