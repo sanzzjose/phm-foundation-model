@@ -1,0 +1,73 @@
+# SSL federado FedAvgM 50x50 con beta=0.7 y seed=43 (Fase 4f multi-seed).
+#
+# Replica exacta de ssl_federated_fedavgm_50x50_m0_7.yaml salvo:
+#   - seed: 42 -> 43.
+#   - run_name (sufijo _seed43).
+#   - paths.checkpoint_dir (subdirectorio dedicado para no pisar el ckpt
+#     del seed=42 ya ejecutado en Fase 4e-lite).
+#
+# Receta intacta: algorithm=fedavgm, server_momentum.beta=0.7,
+# nesterov=false, initialize=zeros, 50 rondas x 50 steps x 10 clientes =
+# 25.000 local steps, mismos 36 PS, lr=0.0003 constante (sin scheduler
+# para aislar el efecto seed).
+#
+# beta=0.7 fue el ganador del barrido Fase 4e-lite (single-seed=42):
+#   - CWRU lin: 0.16 (constant) -> 0.37 (+21 pp).
+#   - HSG18 ft: 0.71 -> 0.72 (se conserva).
+#   - CMAPSS mlp_2layer: 38.92 rmse, supera al central_25k (39.14).
+#
+# Este run y el _seed44 sirven para estimar la varianza inter-seed y
+# decidir si beta=0.7 entra al checkpoint bank canonico del MVP.
+
+run_name: ssl_federated_fedavgm_50x50_m0_7_seed43_patchtst_phm
+seed: 43
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavgm
+  fedprox_mu: null
+  n_rounds: 50
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 10
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+server_momentum:
+  beta: 0.7
+  nesterov: false
+  initialize: zeros
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavgm_50x50_m0_7_seed43

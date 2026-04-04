@@ -1,0 +1,66 @@
+# SSL federado escalado FedAvg 50x50 (Fase 4b del plan maestro).
+# 50 rondas x 50 steps locales x 10 clientes = 25.000 local steps totales.
+# Cap stage=pilot: 20.000 -> hay que usar stage=full (cap 500.000).
+#
+# Comparacion budget-matched principal de Fase 4b:
+#   central_25k vs fedavg_50x50 (25.000 local steps cada uno).
+#
+# Receta: identica a ssl_federated_fedavg_25x50 salvo:
+#   - n_rounds: 25 -> 50.
+#   - stage: pilot -> full (necesario para cap >= 25.000).
+#   - paths.checkpoint_dir: subdirectorio dedicado.
+#
+# Resto idéntico (algorithm=fedavg, fedprox_mu=null, mismos 36 PS, mismos
+# 10 clientes, batch adaptive_by_channels cap 512, sampler weighted con
+# caps audit v2.3, mask_ratio=0.3, W=512/P=16, lr/weight_decay/amp).
+#
+# NO LANZAR sin autorizacion explicita en Colab GPU. El trainer respeta el
+# gating duro por stage; este YAML solo documenta los hyperparams.
+
+run_name: ssl_federated_fedavg_50x50_patchtst_phm
+seed: 42
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavg
+  fedprox_mu: null
+  n_rounds: 50
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 10
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavg_50x50

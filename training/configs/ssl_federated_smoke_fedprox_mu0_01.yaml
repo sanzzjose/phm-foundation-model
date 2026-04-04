@@ -1,0 +1,61 @@
+# SSL federado smoke FedProx mu=0.01 (v0.2): 2 rondas x 5 steps locales
+# x 10 clientes = 100 steps totales. Mismo presupuesto que el smoke
+# FedAvg para poder comparar pipeline end-to-end y aislar el efecto
+# del termino proximal `0.5 * mu * ||theta - theta_global||^2`.
+#
+# Criterio PASS: pipeline end-to-end ejecuta sin errores; el state_dict
+# global cambia tras la primera agregacion; no TT involucrado; las
+# metricas separadas (reconstruction_loss_mean_weighted, fedprox_loss_
+# mean_weighted) aparecen en el log de cada ronda y en run_info.
+#
+# NO sobreescribe el smoke FedAvg: run_name y checkpoint_dir difieren.
+
+run_name: ssl_federated_smoke_fedprox_mu0_01_patchtst_phm
+seed: 42
+stage: smoke
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  # Solo PRETRAIN_SOURCE. Filtrado por construccion en build_clients_*.
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedprox
+  fedprox_mu: 0.01            # mu pequeno: regularizacion suave, anclaje
+                              # debil al state_dict global.
+  n_rounds: 2
+  local_steps: 5
+  clients_per_round: all
+  ckpt_every_rounds: 0        # smoke: solo ckpt final
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_smoke_fedprox_mu0_01
