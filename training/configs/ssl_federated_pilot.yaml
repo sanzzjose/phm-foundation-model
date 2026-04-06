@@ -1,0 +1,54 @@
+# SSL federado pilot: 10 rondas x 50 steps locales x 10 clientes = 5 000 steps.
+# Cap stage=pilot: 20 000 local steps totales.
+# Comparable con el pilot central (5 000 weighted steps con max_steps).
+#
+# NO LANZAR sin autorizacion explicita. La presencia de este YAML solo
+# documenta los hyperparams; el trainer respeta el gating por stage.
+
+run_name: ssl_federated_pilot_patchtst_phm
+seed: 42
+stage: pilot
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavg
+  fedprox_mu: null
+  n_rounds: 10
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 5
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot

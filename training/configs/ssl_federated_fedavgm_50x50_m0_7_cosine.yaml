@@ -1,0 +1,79 @@
+# SSL federado FedAvgM 50x50, beta=0.7 + cosine warmup (Fase 4f.bis, seed=42).
+#
+# Combina las dos piezas ya validadas por separado:
+#   - server_momentum beta=0.7 (ganador del barrido de Fase 4e-lite).
+#   - lr_scheduler cosine+warmup (receta de Fase 4c, identica a la del
+#     central_full y a ssl_federated_fedavg_50x50_cosine_warmup.yaml).
+#
+# Hipotesis de Fase 4f.bis: el scheduler recupera HSG18 full_ft (unico
+# flanco donde beta=0.7 NO mejoraba al FedAvg constant en el multi-seed
+# de Fase 4f) sin romper la ganancia robusta de CWRU linear.
+#
+# Identico a ssl_federated_fedavgm_50x50_m0_7.yaml salvo:
+#   - run_name (sufijo _cosine).
+#   - paths.checkpoint_dir (subdirectorio dedicado).
+#   - bloque lr_scheduler anadido (la unica diferencia de receta).
+#
+# NO LANZAR sin autorizacion explicita en Colab GPU.
+
+run_name: ssl_federated_fedavgm_50x50_m0_7_cosine_patchtst_phm
+seed: 42
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavgm
+  fedprox_mu: null
+  n_rounds: 50
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 10
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+server_momentum:
+  beta: 0.7
+  nesterov: false
+  initialize: zeros
+
+# LR scheduler cosine+warmup (Fase 4c). La unica diferencia de receta vs
+# ssl_federated_fedavgm_50x50_m0_7.yaml (que usa LR constante).
+lr_scheduler:
+  type: cosine
+  warmup_steps: 2000
+  total_steps: 100000
+  step_accounting: aggregate_local_updates
+  same_lr_for_all_clients_in_round: true
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavgm_50x50_m0_7_cosine
