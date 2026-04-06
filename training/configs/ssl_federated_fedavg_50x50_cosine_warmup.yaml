@@ -1,0 +1,82 @@
+# SSL federado FedAvg 50x50 con cosine warmup scheduler (Fase 4c).
+#
+# Identico a ssl_federated_fedavg_50x50.yaml salvo:
+#   - run_name unico.
+#   - paths.checkpoint_dir unico.
+#   - bloque `lr_scheduler` activado con receta cosine+warmup equivalente
+#     al central_full:
+#       * type=cosine
+#       * warmup_steps=2000 (mismo que central_full)
+#       * total_steps=100000 (mismo horizonte que central_full; permite
+#         comparacion bit-perfect con `central_25k` que es el snapshot del
+#         central_full a step 25k)
+#       * step_accounting=aggregate_local_updates: el step global cuenta
+#         los local updates agregados sobre todos los clientes y rondas;
+#         con 50x50x10 clientes = 25.000 local steps -> step_global tras
+#         50 rondas = 24.990 (~25% del horizonte de 100k).
+#       * same_lr_for_all_clients_in_round=true: el LR depende solo de
+#         (round_idx, local_step_in_round), no del cliente.
+#
+# Objetivo: aislar el efecto del scheduler en la comparacion FedAvg vs
+# central_25k de Fase 4b. Si el gap downstream cierra, el scheduler es la
+# causa principal. Si no cierra, el algoritmo FedAvg en si tiene
+# limitaciones reales que reportar honestamente en la memoria.
+#
+# NO LANZAR sin autorizacion explicita en Colab GPU.
+
+run_name: ssl_federated_fedavg_50x50_cosine_warmup_patchtst_phm
+seed: 42
+stage: full
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+ssl:
+  mask_ratio: 0.3
+  loss: mse
+
+data:
+  role: PRETRAIN_SOURCE
+  split: train
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  client_source: results/audit/audit_groups.json
+  client_sampling_strategy: weighted
+  aggregation_weight_policy: final_client_weight
+
+federated:
+  algorithm: fedavg
+  fedprox_mu: null
+  n_rounds: 50
+  local_steps: 50
+  clients_per_round: all
+  ckpt_every_rounds: 10
+
+training:
+  lr: 0.0003
+  weight_decay: 0.05
+  grad_clip_norm: 1.0
+  amp: auto
+
+# LR scheduler (v0.3, Fase 4c). Si se elimina este bloque, el trainer FL
+# vuelve al comportamiento historico (LR constante = training.lr).
+lr_scheduler:
+  type: cosine
+  warmup_steps: 2000
+  total_steps: 100000
+  step_accounting: aggregate_local_updates
+  same_lr_for_all_clients_in_round: true
+
+paths:
+  processed_root:  /content/drive/MyDrive/fm_fl_phmd/processed
+  log_dir:         /content/drive/MyDrive/fm_fl_phmd/logs/pretraining_federated
+  checkpoint_dir:  /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavg_50x50_cosine_warmup
