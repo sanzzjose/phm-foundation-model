@@ -1,0 +1,202 @@
+{
+  "n_rounds": 2,
+  "local_steps": 5,
+  "total_local_optimizer_steps": 100,
+  "clients_seen": [
+    "aero_engines",
+    "batteries",
+    "bearings",
+    "cnc_milling",
+    "gearboxes",
+    "hdd",
+    "misc",
+    "misc_industrial",
+    "phm_challenges",
+    "wind"
+  ],
+  "datasets_seen_by_client": {
+    "aero_engines": [
+      "NCMAPSS"
+    ],
+    "batteries": [
+      "CALCE_CX2",
+      "FCLB19",
+      "NB1",
+      "NB14",
+      "UNIBO21"
+    ],
+    "bearings": [
+      "IMS",
+      "PRONOSTIA",
+      "UPM23",
+      "XJTU-SY"
+    ],
+    "cnc_milling": [
+      "NMILL"
+    ],
+    "gearboxes": [
+      "ARAMIS20",
+      "PHMAP21"
+    ],
+    "hdd": [
+      "HSF15"
+    ],
+    "misc": [
+      "HIRFNASA15",
+      "OBDD17"
+    ],
+    "misc_industrial": [
+      "AC16",
+      "DFD15",
+      "PTRB19"
+    ],
+    "phm_challenges": [
+      "PHM10",
+      "PHME24"
+    ],
+    "wind": [
+      "PHM14"
+    ]
+  },
+  "param_count": 801808,
+  "cumulative_communication_mb": 122.34619140625,
+  "aggregation_weight_policy": "final_client_weight",
+  "checkpoint_final": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_smoke/ssl_federated_smoke_patchtst_phm/ckpt_final.pt",
+  "elapsed_seconds": 91.9,
+  "state_norm_changed_in_any_round": true,
+  "opt_steps_per_client_total": {
+    "aero_engines": 10,
+    "batteries": 10,
+    "bearings": 10,
+    "cnc_milling": 10,
+    "gearboxes": 10,
+    "hdd": 10,
+    "misc": 10,
+    "misc_industrial": 10,
+    "phm_challenges": 10,
+    "wind": 10
+  },
+  "loss_finite_per_client_round": {
+    "aero_engines": [
+      true,
+      true
+    ],
+    "batteries": [
+      true,
+      true
+    ],
+    "bearings": [
+      true,
+      true
+    ],
+    "cnc_milling": [
+      true,
+      true
+    ],
+    "gearboxes": [
+      true,
+      true
+    ],
+    "hdd": [
+      true,
+      true
+    ],
+    "misc": [
+      true,
+      true
+    ],
+    "misc_industrial": [
+      true,
+      true
+    ],
+    "phm_challenges": [
+      true,
+      true
+    ],
+    "wind": [
+      true,
+      true
+    ]
+  },
+  "amp_nonfinite_grad_steps_total": {
+    "aero_engines": 0,
+    "batteries": 0,
+    "bearings": 0,
+    "cnc_milling": 0,
+    "gearboxes": 0,
+    "hdd": 0,
+    "misc": 0,
+    "misc_industrial": 0,
+    "phm_challenges": 0,
+    "wind": 0
+  },
+  "max_effective_bc_global": 510,
+  "kind": "run_info",
+  "ts": "2026-05-24T14:37:54",
+  "stage": "smoke",
+  "run_name": "ssl_federated_smoke_patchtst_phm",
+  "config_hash": "f0abda1a47ed272e",
+  "git_hash": "20ebe5a06a28846d803ef61b0d1ea5ee212ba825",
+  "git_dirty": false,
+  "smoke_pass": true,
+  "smoke_checks": {
+    "all_clients_finite_loss": {
+      "ok": true,
+      "clients_participated": [
+        "aero_engines",
+        "batteries",
+        "bearings",
+        "cnc_milling",
+        "gearboxes",
+        "hdd",
+        "misc",
+        "misc_industrial",
+        "phm_challenges",
+        "wind"
+      ],
+      "clients_with_any_finite_loss": [
+        "aero_engines",
+        "batteries",
+        "bearings",
+        "cnc_milling",
+        "gearboxes",
+        "hdd",
+        "misc",
+        "misc_industrial",
+        "phm_challenges",
+        "wind"
+      ]
+    },
+    "all_clients_opt_steps_gt0": {
+      "ok": true,
+      "clients_without_opt_steps": [],
+      "opt_steps_per_client": {
+        "aero_engines": 10,
+        "batteries": 10,
+        "bearings": 10,
+        "cnc_milling": 10,
+        "gearboxes": 10,
+        "hdd": 10,
+        "misc": 10,
+        "misc_industrial": 10,
+        "phm_challenges": 10,
+        "wind": 10
+      }
+    },
+    "global_state_changes": {
+      "ok": true
+    },
+    "max_effective_bc_within_cap": {
+      "ok": true,
+      "max_effective_bc_global": 510,
+      "max_channel_batch": 512,
+      "min_batch_size": 1
+    },
+    "no_tt_in_plan": {
+      "ok": true,
+      "violations": [],
+      "source": "processed_summary_csv",
+      "checked_via": "role"
+    }
+  }
+}
