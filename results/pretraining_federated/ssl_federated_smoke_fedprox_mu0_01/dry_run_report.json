@@ -1,0 +1,82 @@
+{
+  "ts": "2026-05-26T07:37:57",
+  "stage": "smoke",
+  "run_name": "ssl_federated_smoke_fedprox_mu0_01_patchtst_phm",
+  "config_hash": "e89d1661836518eb",
+  "audit_path": "results/audit/audit_groups.json",
+  "checks": {
+    "n_clients": {
+      "value": 10,
+      "expected": 10,
+      "ok": true
+    },
+    "n_datasets": {
+      "value": 36,
+      "expected": 36,
+      "ok": true
+    },
+    "no_tt_in_plan": {
+      "ok": true,
+      "violations": [],
+      "source": "processed_summary_csv",
+      "checked_via": "role"
+    },
+    "forward_synthetic": {
+      "ok": true,
+      "reconstruction_shape": [
+        2,
+        2,
+        32,
+        16
+      ]
+    }
+  },
+  "plan_rows": 36,
+  "plan_policy": [
+    "final_client_weight_capped_v23"
+  ],
+  "clients": [
+    {
+      "name": "aero_engines",
+      "n_datasets": 1
+    },
+    {
+      "name": "batteries",
+      "n_datasets": 5
+    },
+    {
+      "name": "bearings",
+      "n_datasets": 12
+    },
+    {
+      "name": "cnc_milling",
+      "n_datasets": 1
+    },
+    {
+      "name": "gearboxes",
+      "n_datasets": 2
+    },
+    {
+      "name": "hdd",
+      "n_datasets": 1
+    },
+    {
+      "name": "misc",
+      "n_datasets": 4
+    },
+    {
+      "name": "misc_industrial",
+      "n_datasets": 5
+    },
+    {
+      "name": "phm_challenges",
+      "n_datasets": 4
+    },
+    {
+      "name": "wind",
+      "n_datasets": 1
+    }
+  ],
+  "return_code": 0,
+  "ok": true
+}
