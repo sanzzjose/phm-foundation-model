@@ -1,0 +1,59 @@
+# Downstream: clasificacion multiclase de CWRU (bearings, TRANSFER_TARGET primary).
+#
+# CWRU es el primer downstream "limpio" del proyecto: target tipo
+# `fault` con etiqueta a nivel de unidad, 4 clases, balance 0.1252,
+# label_coverage 100%. No requiere decision metodologica adicional
+# (a diferencia de CMAPSS RUL).
+#
+# Tres modos soportados por `train_downstream_classification.py`:
+#   --mode from_scratch       backbone PatchTSTPhm random + cabeza random
+#   --mode linear_probing     encoder SSL congelado + cabeza entrenable
+#   --mode full_finetuning    encoder SSL + cabeza, ambos entrenables
+#
+# Para linear_probing y full_finetuning hay que pasar
+# `--checkpoint <ruta>` apuntando al ckpt del SSL central full.
+
+run_name: downstream_cwru_patchtst_base
+seed: 42
+dataset: CWRU
+task: classification_multiclass
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+data:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  dataset: CWRU
+  batch_size: 64
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  lr_backbone: 0.0001
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: macro_f1_val
+  head_dropout: 0.1
+
+  # Caps opcionales para smoke. None = sin limite.
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream/cwru
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream/cwru

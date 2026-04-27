@@ -1,0 +1,36 @@
+# Ablación cabo 2 (Fase 6a): CWRU full_finetuning del FL canónico con
+# lr_backbone = 1e-6 (más suave que el canónico 1e-5).
+#
+# Motivo: fedavgm_50x50_m0_7_canonical full_ft en CWRU se hundió (test 0.278,
+# val 0.430) mientras fedavg_50x50 a 1e-5 era fuerte (0.715). Pregunta: ¿es
+# sensibilidad al LR (un LR más suave lo rescata hacia el linear 0.425) o es
+# estructural del checkpoint con momentum?
+#
+# Ejecutar con --output-dir <.../full_v1_ablations/cwru_ft_lr1e-6>
+# (árbol SEPARADO; NO sobreescribe el resultado canónico a 1e-5).
+
+suite_id: downstream_full_v1_cwru_ft_lr1e-6
+seed: 42
+output_dir: results/downstream/full_v1_ablations/cwru_ft_lr1e-6
+
+checkpoints:
+  - id: fedavgm_50x50_m0_7_canonical
+    origin: fedavgm
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavgm_50x50_m0_7/ssl_federated_fedavgm_50x50_m0_7_patchtst_phm/ckpt_final.pt
+
+datasets:
+  - CWRU
+
+modes_per_task:
+  CWRU: [full_finetuning]
+
+classification:
+  max_epochs: 20
+  early_stopping_patience: 8
+  metric: macro_f1_val
+  lr_head: 1.0e-3
+  lr_backbone: 1.0e-5
+  lr_backbone_full_finetuning: 1.0e-6     # override de la ablación
+
+processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+processed_downstream_root: /content/drive/MyDrive/fm_fl_phmd/processed_downstream

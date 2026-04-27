@@ -1,0 +1,78 @@
+# Config del Downstream Full v1 (Fase 6a).
+#
+# Downstream COMPLETO (no screening) sobre el checkpoint_bank_v1 congelado.
+# Más épocas que el Probe Suite, full fine-tuning real, y se ejecuta sobre
+# varios checkpoints para producir la comparación central-vs-federado.
+#
+# Reglas: selección por VALIDACIÓN; test solo trazabilidad. CALCE_CS2 skipped
+# (needs_semantic_review). from_scratch es independiente del checkpoint
+# (se entrena una vez por dataset).
+
+suite_id: downstream_full_v1
+seed: 42
+output_dir: results/downstream/full_v1
+
+# Checkpoints principales de Fase 6a. `path` vive en Drive. El runner los
+# lee de aquí (fuente de verdad versionada). `--checkpoint-bank <json>` puede
+# sobreescribir con los `included` de checkpoint_bank_v1.json si se desea.
+checkpoints:
+  - id: central_full_100k
+    origin: central
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt
+  - id: central_25k
+    origin: central
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step025000.pt
+  - id: fedavg_50x50
+    origin: fedavg
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavg_50x50/ssl_federated_fedavg_50x50_patchtst_phm/ckpt_final.pt
+  - id: fedavgm_50x50_m0_7_canonical
+    origin: fedavgm
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_fedavgm_50x50_m0_7/ssl_federated_fedavgm_50x50_m0_7_patchtst_phm/ckpt_final.pt
+
+# Datasets del downstream. CALCE_CS2 queda skipped por el registry.
+datasets:
+  - CWRU
+  - HSG18
+  - CMAPSS_RUL
+  - PHMAP23
+  - PBCP16
+  - PHM18
+  - CALCE_CS2
+
+# Modos por tarea. from_scratch es baseline (sin checkpoint).
+modes_per_task:
+  CWRU: [from_scratch, linear_probing, full_finetuning]
+  HSG18: [from_scratch, linear_probing, full_finetuning]
+  PHMAP23: [from_scratch, linear_probing, full_finetuning]
+  PBCP16: [from_scratch, linear_probing, full_finetuning]
+  PHM18: [from_scratch, linear_probing, full_finetuning]
+  CMAPSS_RUL: [from_scratch, linear, mlp_2layer, full_finetuning]
+
+# Presupuesto downstream completo (más que el probe).
+classification:
+  max_epochs: 20
+  early_stopping_patience: 8
+  metric: macro_f1_val
+  lr_head: 1.0e-3
+  lr_backbone: 1.0e-5          # sweet spot del MVP; 1e-4 provoca catastrophic forgetting
+
+regression:
+  max_epochs: 30
+  early_stopping_patience: 10
+  metric: rmse_val
+  lr_head: 1.0e-3
+  lr_backbone: 1.0e-5
+  head:
+    mlp_2layer:
+      hidden_dim: 256
+      activation: gelu
+      dropout: 0.1
+
+# Raíces de datos en Drive (sobreescribibles por CLI/ctx).
+processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+processed_downstream_root: /content/drive/MyDrive/fm_fl_phmd/processed_downstream
+
+# Política metodológica:
+# - selección por validación; test solo trazabilidad.
+# - sin grids de LR, sin multi-seed (eso es Fase 7).
+# - ningún PRETRAIN_SOURCE entra como tarea (el registry solo tiene TT).
