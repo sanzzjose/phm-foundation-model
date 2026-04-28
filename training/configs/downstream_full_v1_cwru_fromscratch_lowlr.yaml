@@ -1,0 +1,38 @@
+# Ablación cabo 1 (Fase 6a): re-ejecutar CWRU from_scratch con LR más bajo.
+#
+# El from_scratch del downstream_full_v1 divergió (loss NaN en step 15849):
+# from_scratch entrena el backbone ALEATORIO a lr_head=1e-3 (un solo grupo),
+# demasiado alto para un transformer desde cero. Aquí bajamos el LR y
+# desactivamos AMP (fp32 más estable desde cero).
+#
+# Ejecutar con: --only-dataset CWRU --only-mode from_scratch
+# y --output-dir <.../full_v1>  (SOBREESCRIBE el from_scratch fallido en el
+# árbol canónico, dejando el baseline correcto en la tabla).
+
+suite_id: downstream_full_v1_cwru_fromscratch_lowlr
+seed: 42
+output_dir: results/downstream/full_v1
+
+# from_scratch ignora el checkpoint; basta uno para satisfacer el runner.
+checkpoints:
+  - id: central_full_100k
+    origin: central
+    path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt
+
+datasets:
+  - CWRU
+
+modes_per_task:
+  CWRU: [from_scratch]
+
+classification:
+  max_epochs: 20
+  early_stopping_patience: 8
+  metric: macro_f1_val
+  lr_head: 1.0e-3
+  lr_backbone: 1.0e-5
+  lr_head_from_scratch: 3.0e-4     # override: backbone aleatorio entrena a este LR (un grupo)
+  amp: "off"                       # override: fp32, más estable desde cero
+
+processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+processed_downstream_root: /content/drive/MyDrive/fm_fl_phmd/processed_downstream

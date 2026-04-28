@@ -1,0 +1,66 @@
+# Downstream CWRU classification — reintento de full_finetuning con
+# lr_backbone reducido para evitar el colapso observado en el primer
+# baseline.
+#
+# Contexto: el primer pase con lr_backbone=1e-4 produjo macro_f1=0.1690
+# (peor que from_scratch=0.3503 y muy lejos del linear_probing=0.7046).
+# Diagnostico: el backbone SSL recibe gradientes demasiado agresivos
+# durante el fine-tuning sobre un dataset relativamente pequeno (CWRU
+# tiene 140134 ventanas con C=2 canales) y destruye las representaciones
+# aprendidas en el SSL central full. Sintoma: bal_acc=0.2500 estable
+# durante 5 epocas consecutivas (colapso a la clase mayoritaria).
+#
+# Cambio respecto a downstream_cwru_classification.yaml:
+#   - lr_backbone: 0.0001 -> 0.00001 (10x menor)
+#   - run_name distinto para que el config_hash quede separado en logs
+#
+# El resto se mantiene identico para que la diferencia de resultados sea
+# atribuible exclusivamente al LR del backbone.
+#
+# Modo a usar: --mode full_finetuning (los otros dos modos no son
+# relevantes aqui; from_scratch ignora lr_backbone y linear_probing
+# congela el backbone y por tanto no lo usa).
+
+run_name: downstream_cwru_patchtst_base_finetune_lr1e-5
+seed: 42
+dataset: CWRU
+task: classification_multiclass
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+data:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  dataset: CWRU
+  batch_size: 64
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  lr_backbone: 0.00001   # 10x menor que la config base
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: macro_f1_val
+  head_dropout: 0.1
+
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream/cwru
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream/cwru
