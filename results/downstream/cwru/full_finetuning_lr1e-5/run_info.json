@@ -1,0 +1,87 @@
+{
+  "ts": "2026-05-23T19:58:50",
+  "mode": "full_finetuning",
+  "run_name": "downstream_cwru_patchtst_base_finetune_lr1e-5",
+  "dataset": "CWRU",
+  "seed": 42,
+  "git_hash": "7fe07c74b9974764f2f0b0b9a9bc01ec3830d3ee",
+  "git_dirty": false,
+  "config_hash": "611ed4e09684a58c",
+  "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3
+  },
+  "train_counts": {
+    "3": 6629,
+    "0": 20733,
+    "2": 27112,
+    "1": 51409
+  },
+  "n_classes": 4,
+  "n_trainable_params": 802324,
+  "n_total_params": 802324,
+  "best_epoch": 14,
+  "best_value": 0.788408047232491,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 3331,
+    "accuracy": 0.8435905133593515,
+    "balanced_accuracy": 0.9023262331540957,
+    "macro_f1": 0.8292126809036571,
+    "confusion_matrix": [
+      [
+        476,
+        0,
+        1,
+        0
+      ],
+      [
+        477,
+        1901,
+        0,
+        0
+      ],
+      [
+        38,
+        5,
+        433,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "elapsed_seconds": 3563.7,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": 1e-05,
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
