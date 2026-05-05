@@ -1,0 +1,38 @@
+run_name: downstream_hsg18_patchtst_base_linear_probing
+seed: 42
+dataset: HSG18
+task: classification_multiclass
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+data:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  dataset: HSG18
+  batch_size: 64
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  lr_backbone: 0.0001
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: macro_f1_val
+  head_dropout: 0.1
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream/hsg18
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream/hsg18
