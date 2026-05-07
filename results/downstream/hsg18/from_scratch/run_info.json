@@ -1,0 +1,67 @@
+{
+  "ts": "2026-05-23T21:58:36",
+  "mode": "from_scratch",
+  "run_name": "downstream_hsg18_patchtst_base_from_scratch",
+  "dataset": "HSG18",
+  "seed": 42,
+  "git_hash": "06de36ef666a75164be39f44fdcb4a246761ab62",
+  "git_dirty": true,
+  "config_hash": "e0a7fe0a1d9174f2",
+  "checkpoint_loaded": null,
+  "label_mapping": {
+    "0": 0,
+    "1": 1
+  },
+  "train_counts": {
+    "1": 18304,
+    "0": 9152
+  },
+  "n_classes": 2,
+  "n_trainable_params": 802066,
+  "n_total_params": 802066,
+  "best_epoch": 10,
+  "best_value": 0.5216289799634113,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 4576,
+    "accuracy": 0.569493006993007,
+    "balanced_accuracy": 0.569493006993007,
+    "macro_f1": 0.5693189227698675,
+    "confusion_matrix": [
+      [
+        1349,
+        939
+      ],
+      [
+        1031,
+        1257
+      ]
+    ]
+  },
+  "elapsed_seconds": 865.7,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
