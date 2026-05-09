@@ -1,0 +1,100 @@
+{
+  "ts": "2026-05-23T22:32:27",
+  "mode": "from_scratch",
+  "run_name": "downstream_pbcp16_patchtst_base_from_scratch",
+  "dataset": "PBCP16",
+  "seed": 42,
+  "git_hash": "06de36ef666a75164be39f44fdcb4a246761ab62",
+  "git_dirty": true,
+  "config_hash": "cd6bb8ff805f6854",
+  "checkpoint_loaded": null,
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4
+  },
+  "train_counts": {
+    "0": 237,
+    "1": 237,
+    "2": 237,
+    "3": 237,
+    "4": 237
+  },
+  "n_classes": 5,
+  "n_trainable_params": 802453,
+  "n_total_params": 802453,
+  "best_epoch": 20,
+  "best_value": 0.890843159793677,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 395,
+    "accuracy": 0.9113924050632911,
+    "balanced_accuracy": 0.911392405063291,
+    "macro_f1": 0.9074450228664981,
+    "confusion_matrix": [
+      [
+        51,
+        22,
+        6,
+        0,
+        0
+      ],
+      [
+        0,
+        72,
+        0,
+        5,
+        2
+      ],
+      [
+        0,
+        0,
+        79,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        79,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        79
+      ]
+    ]
+  },
+  "elapsed_seconds": 41.0,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
