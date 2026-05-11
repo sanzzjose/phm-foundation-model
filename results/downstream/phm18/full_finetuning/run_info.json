@@ -1,0 +1,76 @@
+{
+  "ts": "2026-05-23T22:31:38",
+  "mode": "full_finetuning",
+  "run_name": "downstream_phm18_patchtst_base_full_ft_lr1e-5",
+  "dataset": "PHM18",
+  "seed": 42,
+  "git_hash": "06de36ef666a75164be39f44fdcb4a246761ab62",
+  "git_dirty": true,
+  "config_hash": "01af0c1fee6a824d",
+  "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2
+  },
+  "train_counts": {
+    "0": 1596,
+    "2": 297,
+    "1": 708
+  },
+  "n_classes": 3,
+  "n_trainable_params": 802195,
+  "n_total_params": 802195,
+  "best_epoch": 19,
+  "best_value": 0.29086661242305284,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 369,
+    "accuracy": 0.6178861788617886,
+    "balanced_accuracy": 0.37033924680983504,
+    "macro_f1": 0.3406437141366719,
+    "confusion_matrix": [
+      [
+        215,
+        10,
+        0
+      ],
+      [
+        90,
+        11,
+        1
+      ],
+      [
+        38,
+        2,
+        2
+      ]
+    ]
+  },
+  "elapsed_seconds": 93.0,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": "1e-05",
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
