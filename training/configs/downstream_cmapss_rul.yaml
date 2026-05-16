@@ -1,0 +1,129 @@
+# Downstream: regresion RUL sobre CMAPSS_RUL (aero_engines, TRANSFER_TARGET primary).
+#
+# TEMPLATE BASE — NO USAR DIRECTAMENTE PARA LAS CORRIDAS OFICIALES.
+#
+# Las 3 corridas oficiales del bloque RUL (commit 6) usan tres YAMLs
+# explicitos, cada uno con `run_name` distinto y `lr_backbone`
+# adaptado al modo:
+#
+#   training/configs/downstream_cmapss_rul_from_scratch.yaml
+#       run_name: downstream_cmapss_rul_from_scratch
+#       lr_head=1e-3, lr_backbone=1e-4
+#
+#   training/configs/downstream_cmapss_rul_linear_probing.yaml
+#       run_name: downstream_cmapss_rul_linear_probing
+#       lr_head=1e-3, lr_backbone=null (backbone congelado)
+#
+#   training/configs/downstream_cmapss_rul_full_finetuning_lr1e-5.yaml
+#       run_name: downstream_cmapss_rul_full_finetuning_lr1e-5
+#       lr_head=1e-3, lr_backbone=1e-5 (sweet spot CWRU/HSG18)
+#
+# Este fichero se conserva como referencia documental del contrato
+# (estructura del YAML, paths, comentarios de los campos). Si quieres
+# usarlo como base para una ablation custom, copialo y cambia
+# `run_name` antes de lanzar — el trainer escribe en
+# `paths.log_dir/run_name`, por tanto reusar run_name pisaria runs
+# previos.
+#
+# A diferencia del downstream classification, CMAPSS RUL no se entrena
+# sobre el corpus harmonizado SSL (processed/CMAPSS/) sino sobre el
+# dataset reconstruido por el builder dedicado:
+#
+#   /content/drive/MyDrive/fm_fl_phmd/processed_downstream/CMAPSS_RUL/
+#       manifest.json
+#       done.flag
+#       train/  shard_0000.tar .. shard_0011.tar    (11795 samples)
+#       val/    shard_0000.tar .. shard_0003.tar    ( 3131 samples)
+#       test/   shard_0000.tar .. shard_0006.tar    ( 6610 samples)
+#
+# Razon: la harmonization v0.5 deja el target ambiguo entre splits
+# (train/val "ciclos restantes", test "cycle - failure_cycle"). El
+# builder reconstruye RUL fisico desde raw. Ver
+# `results/downstream/cmapss_rul_decision/decision.md`.
+#
+# Tres modos soportados por `train_downstream_rul.py`:
+#   --mode from_scratch       backbone PatchTSTPhm random + cabeza random
+#   --mode linear_probing     encoder SSL congelado + cabeza entrenable
+#   --mode full_finetuning    encoder SSL + cabeza, ambos entrenables
+#
+# Para linear_probing y full_finetuning hay que pasar
+# `--checkpoint <ruta>` apuntando al ckpt del SSL central full.
+
+run_name: downstream_cmapss_rul_patchtst_base
+seed: 42
+dataset: CMAPSS_RUL
+task: regression_rul
+
+# Backbone identico al de CWRU + HSG18 (compatibilidad con el ckpt SSL
+# central full ckpt_step100000.pt). Confirmado en CWRU/HSG18: el sweet
+# spot full_ft es lr_backbone=1e-5.
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+# Cabeza de regresion. Por defecto lineal minima (estandar literatura
+# RUL); el MLP de 2 capas se habilita con hidden_dim > 0.
+head:
+  hidden_dim: null         # null = cabeza lineal (Linear(d_model, 1))
+  dropout: 0.0
+  activation: null         # null o "relu"|"gelu"|"tanh" si hidden_dim
+  keep_last_dim: false     # false = salida (B,); true = salida (B,1)
+
+data:
+  # IMPORTANTE: directorio del builder CMAPSS RUL, NO processed/.
+  processed_downstream_root: /content/drive/MyDrive/fm_fl_phmd/processed_downstream
+  target_key: rul_capped_125    # canonico Heimes 2008. Alternativa: rul_physical.
+  n_channels_fallback: 24       # solo se usa si manifest no es accesible.
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  lr_backbone: null            # solo se usa en full_finetuning; ver below.
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: rmse_val    # menor es mejor.
+  lower_is_better: true
+
+  # Caps opcionales para smoke. None = sin limite.
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+
+evaluation:
+  # Si true, persiste predictions_test.json con y_true / y_pred (util
+  # para generar scatter plots post-hoc). Por defecto desactivado:
+  # el run_info.json solo guarda las metricas agregadas.
+  save_predictions: false
+
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream/cmapss_rul
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream/cmapss_rul
+
+# Overrides por modo (referencia, no se aplican automaticamente; las
+# corridas en Colab los aplican via --mode). Esto sirve como
+# documentacion de los hiperparametros validados en CWRU/HSG18.
+#
+# mode_overrides:
+#   from_scratch:
+#     training.lr_head: 0.001
+#     training.lr_backbone: 0.0001
+#   linear_probing:
+#     training.lr_head: 0.001
+#     training.lr_backbone: null
+#   full_finetuning:
+#     training.lr_head: 0.001
+#     training.lr_backbone: 0.00001    # 1e-5: sweet spot validado en CWRU + HSG18
