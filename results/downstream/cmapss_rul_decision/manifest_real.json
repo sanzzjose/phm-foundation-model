@@ -1,0 +1,150 @@
+{
+  "anti_leakage_checks": {
+    "by_fd": {
+      "FD001": {
+        "n_test_observed": 100,
+        "n_test_orig_expected": 100,
+        "n_train_observed": 80,
+        "n_train_orig_expected": 80,
+        "n_val_from_train_orig_expected": 20,
+        "n_val_observed": 20,
+        "test_subset_of_test_orig": true,
+        "train_subset_of_train_orig": true,
+        "val_subset_of_train_orig": true
+      },
+      "FD002": {
+        "n_test_observed": 259,
+        "n_test_orig_expected": 259,
+        "n_train_observed": 208,
+        "n_train_orig_expected": 208,
+        "n_val_from_train_orig_expected": 52,
+        "n_val_observed": 52,
+        "test_subset_of_test_orig": true,
+        "train_subset_of_train_orig": true,
+        "val_subset_of_train_orig": true
+      },
+      "FD003": {
+        "n_test_observed": 100,
+        "n_test_orig_expected": 100,
+        "n_train_observed": 80,
+        "n_train_orig_expected": 80,
+        "n_val_from_train_orig_expected": 20,
+        "n_val_observed": 20,
+        "test_subset_of_test_orig": true,
+        "train_subset_of_train_orig": true,
+        "val_subset_of_train_orig": true
+      },
+      "FD004": {
+        "n_test_observed": 248,
+        "n_test_orig_expected": 248,
+        "n_train_observed": 199,
+        "n_train_orig_expected": 199,
+        "n_val_from_train_orig_expected": 50,
+        "n_val_observed": 50,
+        "test_subset_of_test_orig": true,
+        "train_subset_of_train_orig": true,
+        "val_subset_of_train_orig": true
+      }
+    },
+    "no_overlap_train_test": true,
+    "no_overlap_train_val": true,
+    "no_overlap_val_test": true,
+    "test_is_test_orig": true,
+    "test_source_split_is_test_orig": true,
+    "train_source_split_is_train_orig": true,
+    "train_val_drawn_from_train_orig": true,
+    "val_source_split_is_train_orig": true
+  },
+  "batching_policy": "por_dataset",
+  "client": "aero_engines",
+  "dataset": "CMAPSS_RUL",
+  "evaluation_tier": "primary",
+  "formula_test": "last_observed_cycle_by(FD, unit) - cycle + official_RUL_FD[unit]",
+  "formula_train_val": "max_cycle_by(FD, unit) - cycle",
+  "generated_at": "2026-05-25T11:45:43Z",
+  "include_last_per_unit": true,
+  "manifest_version": "v0.1",
+  "min_valid_timesteps": 128,
+  "n_channel_patches_por_split": {
+    "test": 5076480,
+    "train": 9058560,
+    "val": 2404608
+  },
+  "n_channels": 24,
+  "n_patches": 32,
+  "n_shards_por_split": {
+    "test": 7,
+    "train": 12,
+    "val": 4
+  },
+  "n_temporal_patches_por_split": {
+    "test": 211520,
+    "train": 377440,
+    "val": 100192
+  },
+  "n_units_original_por_fd": {
+    "FD001": {
+      "test_orig": 100,
+      "train_orig": 100
+    },
+    "FD002": {
+      "test_orig": 259,
+      "train_orig": 260
+    },
+    "FD003": {
+      "test_orig": 100,
+      "train_orig": 100
+    },
+    "FD004": {
+      "test_orig": 248,
+      "train_orig": 249
+    }
+  },
+  "n_units_por_split": {
+    "test": 707,
+    "train": 567,
+    "val": 142
+  },
+  "n_windows_por_split": {
+    "test": 6610,
+    "train": 11795,
+    "val": 3131
+  },
+  "normalization_policy": "instance_norm_per_window_channel_ignore_padding",
+  "normalization_stats_saved": true,
+  "patch_size": 16,
+  "pipeline_code_version": "fd0cec90604900791de15beca4a79eb9fbe22adc",
+  "pipeline_config_hash": "8317ba2a1bc87e20",
+  "role": "TRANSFER_TARGET",
+  "rul_cap": 125.0,
+  "rul_capped_125_max_por_split": {
+    "test": 125.0,
+    "train": 125.0,
+    "val": 125.0
+  },
+  "rul_physical_max_por_split": {
+    "test": 426.0,
+    "train": 366.0,
+    "val": 415.0
+  },
+  "rul_physical_min_por_split": {
+    "test": 6.0,
+    "train": 0.0,
+    "val": 0.0
+  },
+  "shard_size": 1024,
+  "split_policy": "unit_holdout_by_fd",
+  "split_seed": 42,
+  "stride": 5,
+  "target_candidates": [
+    "rul_physical",
+    "rul_capped_125"
+  ],
+  "target_policy": "rul_at_prediction_cycle",
+  "target_warnings": [],
+  "unit_global_id_policy": "CMAPSS_<fd>_<source_split>_unit<unit_id>",
+  "val_frac": 0.2,
+  "warnings": [],
+  "window_mode": "rolling_causal",
+  "window_size": 512
+}
