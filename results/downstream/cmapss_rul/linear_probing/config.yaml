@@ -1,0 +1,46 @@
+run_name: downstream_cmapss_rul_linear_probing
+seed: 42
+dataset: CMAPSS_RUL
+task: regression_rul
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+head:
+  hidden_dim: null
+  dropout: 0.0
+  activation: null
+  keep_last_dim: false
+data:
+  processed_downstream_root: /content/drive/MyDrive/fm_fl_phmd/processed_downstream
+  target_key: rul_capped_125
+  n_channels_fallback: 24
+  batch_size: 32
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  lr_backbone: null
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: rmse_val
+  lower_is_better: true
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+evaluation:
+  save_predictions: false
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream/cmapss_rul
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream/cmapss_rul

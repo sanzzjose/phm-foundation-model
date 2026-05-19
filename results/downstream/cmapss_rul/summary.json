@@ -1,0 +1,66 @@
+{
+  "dataset": "CMAPSS_RUL",
+  "evaluation_tier": "primary",
+  "task": "regression_rul",
+  "target_key": "rul_capped_125",
+  "n_test_samples": 6610,
+  "ssl_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "ssl_checkpoint_size_mb": 9.3,
+  "hardware": "NVIDIA A100-SXM4-40GB",
+  "trainer_commit": "baef887",
+  "ts_block_end": "2026-05-25",
+  "modes": {
+    "from_scratch": {
+      "run_name": "downstream_cmapss_rul_from_scratch",
+      "config_hash": "9dffcfce47a348b7",
+      "best_epoch": 20,
+      "best_rmse_val": 39.07862479580942,
+      "test_metrics": {
+        "mae": 37.01135641791817,
+        "rmse": 43.671931158808256,
+        "r2": -0.3994808458444574,
+        "cmapss_score": 754754.4711138614,
+        "n_samples": 6610
+      },
+      "elapsed_seconds": 571.5,
+      "checkpoint_loaded": null,
+      "n_trainable_params": 801937
+    },
+    "linear_probing": {
+      "run_name": "downstream_cmapss_rul_linear_probing",
+      "config_hash": "51266c7ae9154e4d",
+      "best_epoch": 20,
+      "best_rmse_val": 43.21395087460906,
+      "test_metrics": {
+        "mae": 47.21167432695582,
+        "rmse": 53.8626735214119,
+        "r2": -1.1288152751729514,
+        "cmapss_score": 1002484.8459673865,
+        "n_samples": 6610
+      },
+      "elapsed_seconds": 386.6,
+      "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+      "n_trainable_params": 129
+    },
+    "full_finetuning_lr1e-5": {
+      "run_name": "downstream_cmapss_rul_full_finetuning_lr1e-5",
+      "config_hash": "3e893b96a3e53b46",
+      "best_epoch": 15,
+      "best_rmse_val": 39.5435169728571,
+      "test_metrics": {
+        "mae": 38.209660825967426,
+        "rmse": 44.325729664590284,
+        "r2": -0.44169685903540246,
+        "cmapss_score": 645388.6143058306,
+        "n_samples": 6610
+      },
+      "elapsed_seconds": 486.1,
+      "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+      "n_trainable_params": 801937
+    }
+  },
+  "note": "All three official CMAPSS_RUL runs completed on Colab A100. r2_test is negative in all modes; SSL central full does not improve RUL transfer under this canonical config.",
+  "run_info_full_path": "/content/drive/MyDrive/fm_fl_phmd/logs/downstream/cmapss_rul/<run_name>/run_info.json",
+  "run_info_versioned_in_repo": true,
+  "run_info_versioning_note": "Los 3 run_info.json reales ya estan versionados bit-a-bit en results/downstream/cmapss_rul/{from_scratch,linear_probing,full_finetuning_lr1e-5}/run_info.json (commit 76226a0). Este summary.json es la version pre-cierre del bloque; el summary citable extendido con deltas, ratios y verdict NO_CONFIRMADA es summary_rul_cmapss.json en este mismo directorio."
+}
