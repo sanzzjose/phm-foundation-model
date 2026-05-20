@@ -1,0 +1,118 @@
+{
+  "evaluation_kind": "downstream_regression_rul_cmapss_central_vs_from_scratch",
+  "dataset": "CMAPSS_RUL",
+  "target_key": "rul_capped_125",
+  "task": "regression_rul",
+  "ssl_central_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "ssl_central_n_steps": 100000,
+  "builder_pipeline_config_hash": "8317ba2a1bc87e20",
+  "builder_pipeline_code_version": "fd0cec9",
+  "hardware": "NVIDIA A100-SXM4-80GB",
+  "trainer_commit": "86c7369",
+  "n_channels": 24,
+  "effective_bc": 504,
+  "test_n_samples": 6610,
+  "ts_block_end": "2026-05-26",
+  "modes_evaluated": ["from_scratch", "linear_probing", "full_finetuning_lr1e-5"],
+  "metrics": ["mae", "rmse", "r2", "cmapss_score"],
+  "primary_metric": "rmse_val",
+  "primary_metric_lower_is_better": true,
+  "runs": {
+    "from_scratch": {
+      "config_hash": "9dffcfce47a348b7",
+      "checkpoint_loaded": null,
+      "lr_head": 0.001,
+      "lr_backbone": 0.0001,
+      "n_trainable_params": 801937,
+      "best_epoch": 20,
+      "best_value_val": 39.07862479580942,
+      "elapsed_seconds": 577.0,
+      "amp_nonfinite_grad_steps": 15,
+      "test_metrics": {
+        "mae": 37.01135641791817,
+        "rmse": 43.671931158808256,
+        "r2": -0.3994808458444574,
+        "cmapss_score": 754754.4711138614,
+        "n_samples": 6610
+      }
+    },
+    "linear_probing": {
+      "config_hash": "51266c7ae9154e4d",
+      "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+      "lr_head": 0.001,
+      "lr_backbone": null,
+      "n_trainable_params": 129,
+      "best_epoch": 20,
+      "best_value_val": 43.21395087460906,
+      "elapsed_seconds": 428.2,
+      "amp_nonfinite_grad_steps": 13,
+      "test_metrics": {
+        "mae": 47.21167432695582,
+        "rmse": 53.8626735214119,
+        "r2": -1.1288152751729514,
+        "cmapss_score": 1002484.8459673865,
+        "n_samples": 6610
+      }
+    },
+    "full_finetuning_lr1e-5": {
+      "config_hash": "3e893b96a3e53b46",
+      "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+      "lr_head": 0.001,
+      "lr_backbone": 1e-05,
+      "n_trainable_params": 801937,
+      "best_epoch": 15,
+      "best_value_val": 39.5435169728571,
+      "elapsed_seconds": 550.3,
+      "amp_nonfinite_grad_steps": 16,
+      "test_metrics": {
+        "mae": 38.209660825967426,
+        "rmse": 44.325729664590284,
+        "r2": -0.44169685903540246,
+        "cmapss_score": 645388.6143058306,
+        "n_samples": 6610
+      }
+    }
+  },
+  "deltas_vs_from_scratch": {
+    "linear_probing": {
+      "d_mae": 10.200317909037647,
+      "d_rmse": 10.190742362603641,
+      "d_r2": -0.729334429328494,
+      "d_cmapss_score": 247730.37485352508,
+      "d_rmse_rel_pct": 23.33747929948957
+    },
+    "full_finetuning_lr1e-5": {
+      "d_mae": 1.198304408049257,
+      "d_rmse": 0.6537985057820284,
+      "d_r2": -0.042216013190944985,
+      "d_cmapss_score": -109365.85680803075,
+      "d_rmse_rel_pct": 1.4970489517862247
+    }
+  },
+  "decision": {
+    "outcome": "NO_CONFIRMADA",
+    "criteria_check": {
+      "rmse_from_scratch": 43.671931158808256,
+      "rmse_best_ssl": 44.325729664590284,
+      "rmse_best_ssl_mode": "full_finetuning_lr1e-5",
+      "d_rmse_best_ssl_vs_from_scratch": 0.6537985057820284,
+      "d_rmse_best_ssl_vs_from_scratch_rel_pct": 1.4970489517862247,
+      "threshold_for_confirmed_rel_pct": -1.0
+    },
+    "verdict": "NO_CONFIRMADA. Ningun modo SSL mejora el RMSE de from_scratch. El mejor modo SSL (full_finetuning_lr1e-5) tiene RMSE=44.33 vs from_scratch=43.67 (delta +0.65, +1.50 %), por encima de from_scratch. linear_probing es catastroficamente peor (+10.19 RMSE, +23.34 %; R2=-1.13). La hipotesis principal del TFM (SSL transfiere a downstream) NO se confirma en este dataset CMAPSS_RUL. Hallazgo metodologico citable: la transferencia SSL del backbone PatchTSTPhm es task-dependent (funciona en classification CWRU/HSG18; no aporta en regresion RUL CMAPSS).",
+    "matices": [
+      "R2 negativo en los 3 modos (-0.40, -1.13, -0.44): NINGUNO supera al predictor de promedio. El problema no es solo SSL vs no-SSL; es que el setup completo (target rul_capped_125, 20 epochs, MSE loss, head lineal) NO esta produciendo un buen estimador.",
+      "best_epoch=20 en from_scratch y linear_probing: no convergieron en 20 epochs. full_finetuning convergio en 15.",
+      "CMAPSS_score: full_finetuning mejora -14.5 % vs from_scratch (645k vs 755k). En la metrica oficial que penaliza asimetricamente predicciones tardias, full_finetuning es ligeramente mas conservador. Pero la mejora NO es atribuible al SSL: el RMSE y MAE son peores.",
+      "linear_probing tiene solo 129 parametros entrenables (cabeza lineal sobre embedding de 128 d_model). El embedding SSL congelado del backbone PatchTSTPhm NO es discriminativo para RUL CMAPSS."
+    ],
+    "vias_no_autorizadas": [
+      "Mas epochs (40-100) en from_scratch y linear_probing para confirmar si la falta de convergencia explica los R2 negativos.",
+      "Probar target_key=rul_physical en lugar de rul_capped_125 (sin cap en 125).",
+      "Probar head MLP con hidden_dim en lugar de lineal minimo (Linear(128, 1)).",
+      "Augmentation o re-weighting del target para mitigar el desbalance en RUL alto."
+    ]
+  },
+  "hallazgo_metodologico": "La hipotesis principal del TFM 'SSL transfiere a downstream' es TASK-DEPENDENT. Queda confirmada en CWRU y HSG18 (classification, +30-45 pp macro_f1 vs baseline) y refutada en CMAPSS_RUL (regression: ningun modo SSL mejora; linear catastroficamente peor). Posibles explicaciones a discutir en la memoria: (a) el objetivo SSL (masked patch prediction) captura estructura local de la senal pero no la degradacion monotona acumulada que RUL requiere; (b) el cap en rul_capped_125 introduce una discontinuidad dificil de modelar; (c) 20 epochs son pocos para regresion RUL pero CWRU/HSG18 convergen rapido; (d) CMAPSS tiene C=24 vs CWRU C=2 / HSG18 C=1 (mas entrada, patron mas complejo). Esto es un hallazgo metodologico importante: en la memoria del TFM la hipotesis principal debe formularse de forma matizada (transferencia SSL es task-dependent, no universal), y este resultado RUL es PARTE de la evidencia, no debe ocultarse.",
+  "_note": "Los 3 run_info.json reales del bloque CMAPSS_RUL estan versionados bit-a-bit en este mismo directorio. Builder CMAPSS_RUL: commit fd0cec9, pipeline_config_hash=8317ba2a1bc87e20 (ver results/downstream/cmapss_rul_decision/decision.md). Trainer: commit 86c7369. CMAPSS_RUL es un TRANSFER_TARGET; CMAPSS estricto no entra en pretraining. Este bloque NO compara FedAvg/FedProx vs central: CMAPSS_RUL no se evaluo con checkpoints federados. Aunque el cliente FL aero_engines contiene NCMAPSS como fuente relacionada, el central 100k ya fue NO_CONFIRMADA en CMAPSS_RUL y los checkpoints FL disponibles son pilotos de budget reducido; por tanto, no se prioriza una evaluacion FL-RUL adicional para el MVP. NO se afirma que FL-RUL este refutado: simplemente no se evaluo. La hipotesis central SSL si queda NO_CONFIRMADA en CMAPSS_RUL por el bloque central RUL cerrado (run_info.json en este directorio)."
+}
