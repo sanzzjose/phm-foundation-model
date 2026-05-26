@@ -1,0 +1,70 @@
+# Downstream CWRU - linear_probing desde el ckpt FL FedProx pilot mu=0.01.
+#
+# Evalua si el embedding del backbone preentrenado FEDERADAMENTE con
+# FedProx mu=0.01 (10 rondas x 50 local steps x 10 clientes = 5000 budget,
+# loss SSL -11.57 % vs -7.55 % del FedAvg pilot v0.1 en el mismo budget)
+# transfiere a CWRU bearings, el TT primary donde el SSL central
+# confirmo +35.4 pp macro_f1 sobre baseline.
+#
+# Backbone congelado, solo entrena la cabeza Linear(d_model, n_classes).
+#
+# Replica EXACTAMENTE el config homologo FedAvg
+# (downstream_cwru_fedavg_pilot_linear_probing.yaml) salvo run_name,
+# paths de salida y el ckpt referenciado en los comentarios. Esto
+# permite comparar bit-a-bit FedAvg pilot vs FedProx pilot bajo
+# identica configuracion downstream.
+#
+# Uso:
+#   python -m training.train_downstream_classification \
+#     --config training/configs/downstream_cwru_fedprox_pilot_mu0_01_linear_probing.yaml \
+#     --mode linear_probing \
+#     --checkpoint /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot_fedprox_mu0_01/ssl_federated_pilot_fedprox_mu0_01_patchtst_phm/ckpt_final.pt
+
+run_name: downstream_cwru_fedprox_pilot_mu0_01_linear_probing
+seed: 42
+dataset: CWRU
+task: classification_multiclass
+
+model:
+  name: patchtst_phm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  dropout: 0.1
+  patch_size: 16
+  n_patches: 32
+
+data:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  dataset: CWRU
+  batch_size: 64
+  batch_size_policy: adaptive_by_channels
+  max_channel_batch: 512
+  min_batch_size: 1
+  num_workers: 2
+
+training:
+  max_epochs: 20
+  lr_head: 0.001
+  # Backbone congelado en linear_probing; lr_backbone no se aplica
+  # realmente, pero el trainer hace float(training_cfg.get("lr_backbone", 0.0))
+  # asi que no se admite null aqui. Dejamos 1e-4 como valor canonico
+  # (mismo que la version central y el FedAvg homologo) para mantener
+  # config_hash consistente; el optimizer solo recibe el grupo de la cabeza.
+  lr_backbone: 0.0001
+  weight_decay: 0.01
+  amp: auto
+  grad_clip_norm: 1.0
+  log_every: 50
+  eval_every_epochs: 1
+  metric_for_best: macro_f1_val
+  head_dropout: 0.1
+
+  max_train_batches_per_epoch: null
+  max_val_batches: null
+  max_test_batches: null
+
+paths:
+  log_dir: /content/drive/MyDrive/fm_fl_phmd/logs/downstream_federated_pilot_fedprox_mu0_01/cwru
+  checkpoint_dir: /content/drive/MyDrive/fm_fl_phmd/checkpoints/downstream_federated_pilot_fedprox_mu0_01/cwru
