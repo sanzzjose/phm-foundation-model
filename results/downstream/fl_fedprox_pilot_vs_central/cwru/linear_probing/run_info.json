@@ -1,0 +1,141 @@
+{
+  "ts": "2026-05-26T10:44:15",
+  "mode": "linear_probing",
+  "run_name": "downstream_cwru_fedprox_pilot_mu0_01_linear_probing",
+  "dataset": "CWRU",
+  "seed": 42,
+  "git_hash": "5fb90bc7973875c2e4d6b1c2282dffe97317584f",
+  "git_dirty": false,
+  "config_hash": "4b100d9b299d1e36",
+  "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot_fedprox_mu0_01/ssl_federated_pilot_fedprox_mu0_01_patchtst_phm/ckpt_final.pt",
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3
+  },
+  "train_counts": {
+    "3": 6629,
+    "0": 20733,
+    "2": 27112,
+    "1": 51409
+  },
+  "n_classes": 4,
+  "n_trainable_params": 516,
+  "n_total_params": 802324,
+  "batch_size_requested": 64,
+  "batch_size_effective": 64,
+  "batch_size_policy": "adaptive_by_channels",
+  "n_channels": 2,
+  "n_channels_source": "manifest",
+  "max_channel_batch": 512,
+  "min_batch_size": 1,
+  "effective_bc": 128,
+  "amp_used": true,
+  "amp_nonfinite_grad_steps": 19,
+  "best_epoch": 20,
+  "best_value": 0.17332838881101142,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 3331,
+    "accuracy": 0.7346142299609727,
+    "balanced_accuracy": 0.5530532913223298,
+    "macro_f1": 0.4586548780230668,
+    "confusion_matrix": [
+      [
+        376,
+        101,
+        0,
+        0
+      ],
+      [
+        307,
+        2071,
+        0,
+        0
+      ],
+      [
+        413,
+        63,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "per_class": {
+      "precision": [
+        0.34306569343065696,
+        0.9266219239373602,
+        null,
+        null
+      ],
+      "recall": [
+        0.7882599580712788,
+        0.8708999158957107,
+        0.0,
+        null
+      ],
+      "f1": [
+        0.4780673871582962,
+        0.8978972469109041,
+        0.0,
+        null
+      ],
+      "support_true": [
+        477,
+        2378,
+        476,
+        0
+      ],
+      "support_pred": [
+        1096,
+        2235,
+        0,
+        0
+      ]
+    },
+    "labels_by_class_id": [
+      "0",
+      "1",
+      "2",
+      "3"
+    ],
+    "zero_support_classes": [
+      "3"
+    ]
+  },
+  "zero_support_classes_test": [
+    "3"
+  ],
+  "elapsed_seconds": 3040.6,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
