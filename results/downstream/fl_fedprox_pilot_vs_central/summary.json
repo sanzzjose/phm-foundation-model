@@ -1,0 +1,128 @@
+{
+  "evaluation_kind": "downstream_classification_primary_central_vs_fedavg_pilot_vs_fedprox_pilot",
+  "ssl_central_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "ssl_fedavg_pilot_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot/ssl_federated_pilot_patchtst_phm/ckpt_final.pt",
+  "ssl_fedprox_pilot_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot_fedprox_mu0_01/ssl_federated_pilot_fedprox_mu0_01_patchtst_phm/ckpt_final.pt",
+  "ssl_central_n_steps": 100000,
+  "ssl_fedavg_pilot_n_optimizer_steps_total": 4989,
+  "ssl_fedprox_pilot_n_optimizer_steps_total": 4989,
+  "ssl_fedprox_pilot_algorithm": "fedprox",
+  "ssl_fedprox_pilot_fedprox_mu": 0.01,
+  "hardware": "NVIDIA A100-SXM4-80GB",
+  "trainer_commit": "5fb90bc",
+  "ts_block_end": "2026-05-26",
+  "datasets_evaluated": ["CWRU", "HSG18"],
+  "modes_per_dataset": ["linear_probing", "full_finetuning_lr1e-5"],
+  "metric": "macro_f1_test",
+  "central": {
+    "CWRU": {
+      "from_scratch": 0.3503,
+      "linear_probing": 0.7046,
+      "full_finetuning_lr1e-5": 0.8292
+    },
+    "HSG18": {
+      "from_scratch": 0.5693,
+      "linear_probing": 0.9056,
+      "full_finetuning_lr1e-5": 0.9504
+    }
+  },
+  "fedavg_pilot": {
+    "CWRU": {
+      "linear_probing": 0.4455601714474118,
+      "full_finetuning_lr1e-5": 0.6635384582258551
+    },
+    "HSG18": {
+      "linear_probing": 0.6080023926042166,
+      "full_finetuning_lr1e-5": 0.5546503226449412
+    }
+  },
+  "fedprox_pilot": {
+    "CWRU": {
+      "linear_probing": {
+        "macro_f1": 0.4586548780230668,
+        "balanced_accuracy": 0.5530532913223298,
+        "accuracy": 0.7346142299609727,
+        "best_epoch": 20,
+        "best_value_val": 0.17332838881101142,
+        "elapsed_seconds": 3040.6,
+        "n_trainable_params": 516,
+        "config_hash": "4b100d9b299d1e36",
+        "amp_nonfinite_grad_steps": 19,
+        "zero_support_classes_test": ["3"]
+      },
+      "full_finetuning_lr1e-5": {
+        "macro_f1": 0.4889175025109511,
+        "balanced_accuracy": 0.495415238560879,
+        "accuracy": 0.6430501350945662,
+        "best_epoch": 14,
+        "best_value_val": 0.5665097908685597,
+        "elapsed_seconds": 3352.5,
+        "n_trainable_params": 802324,
+        "config_hash": "99dc362065131c11",
+        "amp_nonfinite_grad_steps": 17,
+        "zero_support_classes_test": ["3"]
+      }
+    },
+    "HSG18": {
+      "linear_probing": {
+        "macro_f1": 0.724157845786422,
+        "balanced_accuracy": 0.7279283216783217,
+        "accuracy": 0.7279283216783217,
+        "best_epoch": 7,
+        "best_value_val": 0.687565874392507,
+        "elapsed_seconds": 765.5,
+        "n_trainable_params": 258,
+        "config_hash": "34981e60a16ecb71",
+        "amp_nonfinite_grad_steps": 7,
+        "zero_support_classes_test": [],
+        "confusion_matrix": [[1398, 890], [355, 1933]],
+        "per_class_recall": [0.611013986013986, 0.8448426573426573]
+      },
+      "full_finetuning_lr1e-5": {
+        "macro_f1": 0.5628086797898119,
+        "balanced_accuracy": 0.6204108391608392,
+        "accuracy": 0.6204108391608392,
+        "best_epoch": 10,
+        "best_value_val": 0.6455933478834707,
+        "elapsed_seconds": 862.3,
+        "n_trainable_params": 802066,
+        "config_hash": "cddaa17586ef9f72",
+        "amp_nonfinite_grad_steps": 5,
+        "zero_support_classes_test": [],
+        "confusion_matrix": [[589, 1699], [38, 2250]],
+        "per_class_recall": [0.25743006993006995, 0.9833916083916084]
+      }
+    }
+  },
+  "deltas_fedprox_vs_fedavg": {
+    "CWRU":  {"linear": 0.013094706575654963, "full_lr1e-5": -0.17462095571490402},
+    "HSG18": {"linear": 0.1161554531822053,   "full_lr1e-5":  0.008158357144870666}
+  },
+  "deltas_fedprox_vs_central": {
+    "CWRU":  {"linear": -0.24594512197693316, "full_lr1e-5": -0.3402824974890489},
+    "HSG18": {"linear": -0.18144215421357803, "full_lr1e-5": -0.3875913202101881}
+  },
+  "ratios_fedprox_vs_central": {
+    "CWRU":  {"linear": 0.6509705479834188, "full_lr1e-5": 0.5896255934164751},
+    "HSG18": {"linear": 0.7996444519173666, "full_lr1e-5": 0.5922228848376915}
+  },
+  "decision": {
+    "outcome": "NO-GO_full_fedprox_vanilla",
+    "criteria_check": {
+      "fedprox_full_hsg18_recall_clase_0": 0.25743006993006995,
+      "fedprox_full_hsg18_recall_threshold": 0.30,
+      "fedprox_full_hsg18_collapsed": true,
+      "delta_fedprox_vs_fedavg_hsg18_full": 0.008158357144870666,
+      "delta_fedprox_vs_fedavg_cwru_full": -0.17462095571490402,
+      "fedprox_full_cwru_worse_than_fedavg_by_pp": 17.462095571490402
+    },
+    "verdict": "NO-GO full FedProx vanilla. Dos motivos: (1) HSG18 full_finetuning sigue colapsando (recall clase 0 = 0.2574 < 0.30 umbral del runbook), reconfirmando la hipotesis B estructural sobre el cliente FL hdd mono-dataset. (2) CWRU full_finetuning con FedProx EMPEORA 17.5 pp respecto a FedAvg pilot (0.4889 vs 0.6635). FedProx mu=0.01 no produce un encoder mejor que FedAvg para downstream general; solo mejora HSG18 linear_probing (+11.62 pp), un caso de 4. La mejora cualitativa del SSL (loss baja 11.57 % vs 7.55 %) NO se traduce en mejor transferencia downstream salvo en linear probing del cliente mono-dataset.",
+    "vias_abiertas": [
+      "E nueva: ablar lr_backbone < 1e-5 (e.g. 1e-6) en CWRU full_finetuning FedProx para confirmar/refutar que el sweet spot LR de adaptacion difiere para FedProx. Si lo confirma, FedProx puede ser viable con LR mas conservador.",
+      "B: subir min_client_presence (0.005 -> 0.05) para clientes mono-dataset (hdd, wind, cnc_milling, aero_engines) y rehacer pilot+eval.",
+      "D: aceptar el resultado y reportar honestamente que FedProx mu=0.01 mejora el SSL pero no la transferencia downstream general. Es opcion mas conservadora pero defendible si el TFM enfatiza la mejora SSL como hallazgo metodologico."
+    ]
+  },
+  "hallazgo_metodologico": "FedProx mu=0.01 mejora claramente la convergencia SSL (loss agregada baja 11.57 % en 5 000 local steps vs 7.55 % en FedAvg pilot, +4.0 pp), pero esa mejora NO se traduce en mejor transferencia downstream general. De 4 corridas: 1 mejora clara (HSG18 linear, +11.62 pp), 2 mejoras marginales (CWRU linear +1.31 pp, HSG18 full +0.82 pp dentro del ruido) y 1 empeoramiento claro (CWRU full -17.46 pp). El termino proximal parece reducir la plasticidad del backbone bajo full_finetuning con lr_backbone=1e-5, sugiriendo que el sweet spot LR de adaptacion difiere entre central/FedAvg y FedProx. Hipotesis B estructural (HSG18 full colapsa por cliente hdd mono-dataset) sigue confirmada: FedProx no la rescata.",
+  "_note": "Los 4 run_info.json reales del bloque FedProx downstream estan versionados bit-a-bit en este mismo directorio. Las metricas central y FedAvg pilot proceden de results/downstream/fl_pilot_vs_central/summary.json (commit e9fb202 + ablacion lr1e-4 en 2028943). Aviso importante: la celda 15 del notebook ejecutado tenia un bug en la dict comprehension que duplicaba los valores HSG18 sobre CWRU en la tabla comparativa; los run_info reales (versionados aqui) son la fuente canonica. El bug fue corregido en el cierre del bloque downstream FedProx (commit 25cdd81); los run_info.json versionados son la fuente canonica."
+}
