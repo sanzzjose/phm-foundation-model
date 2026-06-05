@@ -1,0 +1,87 @@
+{
+  "ts": "2026-05-25T20:36:32",
+  "mode": "full_finetuning",
+  "run_name": "downstream_cwru_fedavg_pilot_full_finetuning_lr1e-5",
+  "dataset": "CWRU",
+  "seed": 42,
+  "git_hash": "e9fb2021c9d7ea6d89f000323036073018180a59",
+  "git_dirty": false,
+  "config_hash": "f03d5b9d3cd25ea4",
+  "checkpoint_loaded": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot/ssl_federated_pilot_patchtst_phm/ckpt_final.pt",
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3
+  },
+  "train_counts": {
+    "3": 6629,
+    "0": 20733,
+    "2": 27112,
+    "1": 51409
+  },
+  "n_classes": 4,
+  "n_trainable_params": 802324,
+  "n_total_params": 802324,
+  "batch_size_requested": 64,
+  "batch_size_effective": 64,
+  "batch_size_policy": "adaptive_by_channels",
+  "n_channels": 2,
+  "n_channels_source": "manifest",
+  "max_channel_batch": 512,
+  "min_batch_size": 1,
+  "effective_bc": 128,
+  "amp_used": true,
+  "amp_nonfinite_grad_steps": 17,
+  "best_epoch": 14,
+  "best_value": 0.6519490439015273,
+  "metric_for_best": "macro_f1_val",
+  "test_metrics": {
+    "n_samples": 3331,
+    "accuracy": 0.7931552086460523,
+    "balanced_accuracy": 0.6328162002891231,
+    "macro_f1": 0.6635384582258551,
+    "confusion_matrix": [
+      [145, 318, 14, 0],
+      [186, 2173, 19, 0],
+      [48, 104, 324, 0],
+      [0, 0, 0, 0]
+    ],
+    "per_class": {
+      "precision": [0.38258575197889183, 0.8373795761078998, 0.907563025210084, null],
+      "recall": [0.3039832285115304, 0.9137931034482759, 0.680672268907563, null],
+      "f1": [0.338785046728972, 0.8739191634828072, 0.7779111644657863, null],
+      "support_true": [477, 2378, 476, 0],
+      "support_pred": [379, 2595, 357, 0]
+    },
+    "labels_by_class_id": ["0", "1", "2", "3"],
+    "zero_support_classes": ["3"]
+  },
+  "zero_support_classes_test": ["3"],
+  "elapsed_seconds": 3384.9,
+  "model": {
+    "name": "patchtst_phm_base",
+    "d_model": 128,
+    "n_layers": 4,
+    "n_heads": 4,
+    "d_ff": 512,
+    "dropout": 0.1,
+    "patch_size": 16,
+    "n_patches": 32
+  },
+  "training": {
+    "max_epochs": 20,
+    "lr_head": 0.001,
+    "lr_backbone": 1e-05,
+    "weight_decay": 0.01,
+    "amp": "auto",
+    "grad_clip_norm": 1.0,
+    "log_every": 50,
+    "eval_every_epochs": 1,
+    "metric_for_best": "macro_f1_val",
+    "head_dropout": 0.1,
+    "max_train_batches_per_epoch": null,
+    "max_val_batches": null,
+    "max_test_batches": null
+  }
+}
