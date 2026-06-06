@@ -1,0 +1,126 @@
+{
+  "evaluation_kind": "downstream_classification_primary_central_vs_fl_pilot",
+  "ssl_central_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt",
+  "ssl_fl_pilot_checkpoint": "/content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_federated_pilot/ssl_federated_pilot_patchtst_phm/ckpt_final.pt",
+  "ssl_central_n_steps": 100000,
+  "ssl_fl_pilot_n_optimizer_steps_total": 4989,
+  "hardware": "NVIDIA A100-SXM4-80GB",
+  "trainer_commit": "e9fb202",
+  "ts_block_end": "2026-05-25",
+  "datasets_evaluated": ["CWRU", "HSG18"],
+  "modes_per_dataset": ["from_scratch", "linear_probing", "full_finetuning_lr1e-5"],
+  "ablations": {
+    "HSG18": ["full_finetuning_lr1e-4"]
+  },
+  "metric": "macro_f1_test",
+  "central": {
+    "CWRU": {
+      "from_scratch": 0.3503,
+      "linear_probing": 0.7046,
+      "full_finetuning_lr1e-5": 0.8292
+    },
+    "HSG18": {
+      "from_scratch": 0.5693,
+      "linear_probing": 0.9056,
+      "full_finetuning_lr1e-5": 0.9504
+    }
+  },
+  "fl_pilot": {
+    "CWRU": {
+      "linear_probing": {
+        "macro_f1": 0.4455601714474118,
+        "balanced_accuracy": 0.5471433634310318,
+        "accuracy": 0.7087961573101171,
+        "best_epoch": 20,
+        "best_value_val": 0.2125592727030782,
+        "elapsed_seconds": 3048.6,
+        "n_trainable_params": 516,
+        "config_hash": "4d84ef821742b706",
+        "amp_nonfinite_grad_steps": 19,
+        "zero_support_classes_test": ["3"]
+      },
+      "full_finetuning_lr1e-5": {
+        "macro_f1": 0.6635384582258551,
+        "balanced_accuracy": 0.6328162002891231,
+        "accuracy": 0.7931552086460523,
+        "best_epoch": 14,
+        "best_value_val": 0.6519490439015273,
+        "elapsed_seconds": 3384.9,
+        "n_trainable_params": 802324,
+        "config_hash": "f03d5b9d3cd25ea4",
+        "amp_nonfinite_grad_steps": 17,
+        "zero_support_classes_test": ["3"]
+      }
+    },
+    "HSG18": {
+      "linear_probing": {
+        "macro_f1": 0.6080023926042166,
+        "balanced_accuracy": 0.6370192307692307,
+        "accuracy": 0.6370192307692307,
+        "best_epoch": 7,
+        "best_value_val": 0.6449951706753987,
+        "elapsed_seconds": 777.1,
+        "n_trainable_params": 258,
+        "config_hash": "443a241cd886514a",
+        "amp_nonfinite_grad_steps": 7,
+        "zero_support_classes_test": []
+      },
+      "full_finetuning_lr1e-5": {
+        "macro_f1": 0.5546503226449412,
+        "balanced_accuracy": 0.6175699300699301,
+        "accuracy": 0.6175699300699301,
+        "best_epoch": 10,
+        "best_value_val": 0.5977345590388965,
+        "elapsed_seconds": 873.3,
+        "n_trainable_params": 802066,
+        "config_hash": "7b65a7a636d82886",
+        "amp_nonfinite_grad_steps": 4,
+        "zero_support_classes_test": []
+      },
+      "full_finetuning_lr1e-4": {
+        "macro_f1": 0.3333333333333333,
+        "balanced_accuracy": 0.5,
+        "accuracy": 0.5,
+        "best_epoch": 1,
+        "best_value_val": 0.4,
+        "elapsed_seconds": 852.7,
+        "n_trainable_params": 802066,
+        "config_hash": "83cb85a84b582b92",
+        "amp_nonfinite_grad_steps": 6,
+        "zero_support_classes_test": [],
+        "confusion_matrix": [[0, 2288], [0, 2288]],
+        "per_class_recall": [0.0, 1.0],
+        "is_ablation": true,
+        "ablation_purpose": "Distinguir hipotesis A (problema de adaptacion por LR conservador) vs B (problema estructural del embedding FL HDD).",
+        "ablation_outcome": "Hipotesis B confirmada: colapso degenerado a clase 1 (recall clase 0 = 0%). LR mas alto NO rescata el embedding FL HDD; lo acelera al colapso. El cliente FL hdd con 1 solo dataset (HSF15) no produce un encoder transferible al dominio HDD."
+      }
+    }
+  },
+  "deltas_fl_vs_from_scratch": {
+    "CWRU":  {"linear": 0.0953, "full_lr1e-5":  0.3132},
+    "HSG18": {"linear": 0.0387, "full_lr1e-5": -0.0146}
+  },
+  "deltas_fl_vs_central": {
+    "CWRU":  {"linear": -0.2590, "full_lr1e-5": -0.1657},
+    "HSG18": {"linear": -0.2976, "full_lr1e-5": -0.3957}
+  },
+  "ratios_fl_vs_central": {
+    "CWRU":  {"linear": 0.6324, "full_lr1e-5": 0.8002},
+    "HSG18": {"linear": 0.6714, "full_lr1e-5": 0.5836}
+  },
+  "decision": {
+    "outcome": "CONDITIONAL",
+    "criteria_check": {
+      "fed_linear_gt_from_scratch_both": true,
+      "fed_linear_gt_from_scratch_cwru": true,
+      "fed_linear_gt_from_scratch_hsg18": true,
+      "fed_full_ge_0_9_central_full_both": false,
+      "fed_full_cwru_ratio": 0.8002,
+      "fed_full_hsg18_ratio": 0.5836
+    },
+    "verdict": "FL transfiere parcialmente: claramente en CWRU (cliente bearings cubre 12 datasets en el plan; transfiere a otro dataset bearing) y marginalmente en HSG18 (cliente hdd con 1 solo dataset HSF15; full_ft incluso queda por debajo de from_scratch por colapso a la clase mayoritaria). No autorizar full FL FedAvg vanilla todavia. Considerar antes: (A) FedProx con mu pequeno; (B) subir min_client_presence a 0.05 para clientes mono-dataset; (C) ablar lr_backbone mas alto (1e-4) en HSG18 full_ft para evitar el colapso a la clase mayoritaria.",
+    "ablation_lr1e4_outcome": "EJECUTADA. Hipotesis B (estructural) confirmada: lr_backbone=1e-4 sobre el ckpt FL en HSG18 colapsa degeneradamente (macro_f1=0.3333, recall clase 0=0%, recall clase 1=100%, best_epoch=1/20). Peor que lr1e-5 (-0.2213 macro_f1) y peor que fed_linear (-0.2747). El embedding FL HDD no es informativo y un LR mas alto solo acelera la perdida de senal. Implica que la recomendacion (C) por si sola no rescata HSG18; el problema es la diversidad intra-cliente del FL, no el LR de adaptacion. Refuerza el veredicto NO-GO para full FL FedAvg vanilla en dominios mono-dataset."
+  },
+  "hallazgo_metodologico": "La transferencia FL es dominio-dependiente dentro del corpus FL. Donde el cliente FL contiene varios datasets de su dominio (bearings: 12 en plan, 9 sampled), el embedding generaliza a otros datasets del mismo dominio (CWRU). Donde el cliente FL es mono-dataset (hdd: HSF15), el embedding no captura suficiente diversidad para transferir a HSG18, y ningun LR razonable de full_finetuning lo rescata (la ablacion lr1e-4 lo confirma con colapso degenerado).",
+  "_note": "Las metricas central son las cerradas en commits anteriores del bloque downstream classification (CWRU + HSG18); fueron leidas hardcoded en el summary cell del notebook ejecutado en Colab. Los 4 run_info.json reales del FL pilot estan versionados bit-a-bit en este mismo directorio. El 5o run_info (ablacion HSG18 lr1e-4, commit 250868f, ejecutado 2026-05-25) tambien esta versionado bit-a-bit en hsg18/full_finetuning_lr1e-4/run_info.json."
+}
