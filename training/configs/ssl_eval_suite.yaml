@@ -1,0 +1,87 @@
+# Configuración de la SSL validation suite (v1).
+#
+# Evalúa un checkpoint SSL sobre PRETRAIN_SOURCE de forma determinista y
+# comparable. NO toca TRANSFER_TARGET. Los paths de Drive son solo
+# defaults; cualquiera puede sobreescribirse por CLI (--checkpoint,
+# --output-dir, --max-batches, --device, --seed).
+
+run_name: ssl_eval_suite_v1
+seed: 42
+
+# ---------------------------------------------------------------------------
+# Datos
+# ---------------------------------------------------------------------------
+data:
+  # La suite usa SIEMPRE los 36 PRETRAIN_SOURCE canónicos. Estos campos
+  # son declarativos: "all" significa todos los PS del plan.
+  role_filter: PRETRAIN_SOURCE
+  include_clients: all
+  include_datasets: all          # all => todos los PS; nunca un TT
+  # Split a evaluar. El proyecto solo materializa 'train' en disco para PS;
+  # se evalúa ese split de forma determinista (sin shuffle).
+  eval_split: train
+  # Muestreo determinista: recorre los datasets del plan en orden fijo.
+  sampling_strategy: deterministic
+  # Batch y máscara (idénticos al pretraining para comparabilidad).
+  batch_size_requested: 8
+  mask_ratio: 0.30
+  # Cortes para smoke. null => sin límite (corrida completa).
+  max_batches: null
+  max_batches_per_dataset: 2
+
+# ---------------------------------------------------------------------------
+# Objetivo SSL
+# ---------------------------------------------------------------------------
+ssl:
+  loss: mse
+  mask_ratio: 0.30
+
+# ---------------------------------------------------------------------------
+# Modelo
+# ---------------------------------------------------------------------------
+# La arquitectura real se reconstruye desde el `config.model` que viene
+# embebido en el checkpoint. Estos valores son solo de referencia /
+# documentación; load_model_from_checkpoint usa los del checkpoint.
+model_config_reference:
+  name: PatchTSTPhm_base
+  d_model: 128
+  n_layers: 4
+  n_heads: 4
+  d_ff: 512
+  patch_size: 16
+  n_patches: 32
+
+# ---------------------------------------------------------------------------
+# Checkpoint a evaluar
+# ---------------------------------------------------------------------------
+checkpoint:
+  # `id` etiqueta la corrida en la tabla maestra.
+  id: central_full_100k
+  # `path_or_id` es solo referencia; la ruta real se pasa por --checkpoint.
+  path_or_id: drive://checkpoints/ssl_central_full/ckpt_step100000.pt
+  origin: central
+
+# ---------------------------------------------------------------------------
+# Paths (defaults; sobreescribibles por CLI)
+# ---------------------------------------------------------------------------
+paths:
+  processed_root: /content/drive/MyDrive/fm_fl_phmd/processed
+  checkpoint_path: /content/drive/MyDrive/fm_fl_phmd/checkpoints/ssl_central_full/ssl_central_full_patchtst_phm/ckpt_step100000.pt
+  output_dir: results/pretraining/ssl_eval
+
+# ---------------------------------------------------------------------------
+# Métricas emitidas
+# ---------------------------------------------------------------------------
+eval:
+  phase: ssl_eval
+  metrics:
+    - ssl_val_loss_weighted
+    - ssl_val_loss_per_client
+    - ssl_val_loss_per_dataset
+    - masked_patch_count
+    - padding_ignored_count
+    - nonfinite_count
+    - effective_bc_mean
+    - effective_bc_max
+    - coverage_dataset_count
+    - coverage_client_count
