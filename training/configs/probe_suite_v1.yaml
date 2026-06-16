@@ -1,0 +1,77 @@
+# Config del Probe Suite v1.
+#
+# Datasets obligatorios del plan maestro (Fase 1).
+# - CWRU       : classification (ready)
+# - HSG18      : classification (ready)
+# - CALCE_CS2  : RUL baterias (needs_semantic_review; target `rul` sin SOH, sin ciclo)
+# - PHMAP23    : classification (ready desde 2026-06-05; verificado en shards: fault 0..24, 25 clases)
+# - CMAPSS_RUL : RUL (ready)
+#
+# El probe NO usa test para seleccionar checkpoint. Solo validación.
+
+suite_id: probe_suite_v1
+seed: 42
+
+datasets:
+  - CWRU
+  - HSG18
+  - CALCE_CS2
+  - PHMAP23
+  - CMAPSS_RUL
+
+# Modos por tarea. Para datasets needs_semantic_review estos modos se
+# ignoran y el probe queda como skipped.
+modes_per_task:
+  CWRU:
+    - linear_probing
+    - full_finetuning_short          # 10 epochs, lr_backbone=1e-5
+  HSG18:
+    - linear_probing
+    - full_finetuning_short
+  PBCP16:
+    - linear_probing
+  PHM18:
+    - linear_probing
+  CALCE_CS2:
+    - linear
+    - mlp_2layer
+  PHMAP23:
+    - linear_probing
+  CMAPSS_RUL:
+    - linear
+    - mlp_2layer
+
+# Hiperparámetros canónicos del probe (rápidos, NO downstream completo).
+classification:
+  max_epochs: 10
+  early_stopping_patience: 5
+  metric: macro_f1_val
+  lr_head: 1.0e-3
+  lr_backbone: 1.0e-5
+  freeze_backbone_for_linear: true
+
+regression:
+  max_epochs: 20
+  early_stopping_patience: 8
+  metric: rmse_val
+  head:
+    mlp_2layer:
+      hidden_dim: 256
+      activation: gelu
+      dropout: 0.1
+
+# Checkpoint que se evaluará. El campo `id` es la etiqueta que usará
+# la tabla maestra; `path_or_id` puede vivir en Drive.
+checkpoint:
+  id: central_full_100k
+  path_or_id: drive://checkpoints/ssl_central_full/ckpt_step100000.pt
+  origin: central
+  model_name: PatchTSTPhm_base
+
+# Salida.
+output_dir: results/downstream/probes/v1
+
+# Política metodológica:
+# - Solo se selecciona checkpoint por validación.
+# - Las tareas needs_semantic_review NO se entrenan.
+# - El probe no convierte datos pesados en figuras (eso es del reporting).
