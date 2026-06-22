@@ -1,0 +1,113 @@
+{
+  "results": [
+    {
+      "dataset": "HSG18",
+      "mode": "from_scratch",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.5693189227698675,
+      "bal_acc": 0.569493006993007,
+      "acc": 0.569493006993007,
+      "best_epoch": 10,
+      "elapsed_seconds": 865.7,
+      "config_hash": "e0a7fe0a1d9174f2"
+    },
+    {
+      "dataset": "HSG18",
+      "mode": "linear_probing",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.9055897887323944,
+      "bal_acc": 0.9055944055944056,
+      "acc": 0.9055944055944056,
+      "best_epoch": 15,
+      "elapsed_seconds": 757.1,
+      "config_hash": "af415d2e4f1d63b3"
+    },
+    {
+      "dataset": "HSG18",
+      "mode": "full_finetuning",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.9503931647523997,
+      "bal_acc": 0.9503933566433567,
+      "acc": 0.9503933566433567,
+      "best_epoch": 15,
+      "elapsed_seconds": 848.2,
+      "config_hash": "7c8fdac40f15bb87"
+    },
+    {
+      "dataset": "PHM18",
+      "mode": "from_scratch",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.36551626136812976,
+      "bal_acc": 0.3832492997198879,
+      "acc": 0.6178861788617886,
+      "best_epoch": 20,
+      "elapsed_seconds": 93.0,
+      "config_hash": "775b9e4f0eaf317b"
+    },
+    {
+      "dataset": "PHM18",
+      "mode": "linear_probing",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.27390592806552067,
+      "bal_acc": 0.3415748521630875,
+      "acc": 0.6097560975609756,
+      "best_epoch": 12,
+      "elapsed_seconds": 81.6,
+      "config_hash": "85b8aa4dba0ffcb2"
+    },
+    {
+      "dataset": "PHM18",
+      "mode": "full_finetuning",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.3406437141366719,
+      "bal_acc": 0.37033924680983504,
+      "acc": 0.6178861788617886,
+      "best_epoch": 19,
+      "elapsed_seconds": 93.0,
+      "config_hash": "01af0c1fee6a824d"
+    },
+    {
+      "dataset": "PBCP16",
+      "mode": "from_scratch",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.9074450228664981,
+      "bal_acc": 0.911392405063291,
+      "acc": 0.9113924050632911,
+      "best_epoch": 20,
+      "elapsed_seconds": 41.0,
+      "config_hash": "cd6bb8ff805f6854"
+    },
+    {
+      "dataset": "PBCP16",
+      "mode": "linear_probing",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.8286602758620806,
+      "bal_acc": 0.8430379746835441,
+      "acc": 0.8430379746835444,
+      "best_epoch": 18,
+      "elapsed_seconds": 36.4,
+      "config_hash": "fbd1fab585af0773"
+    },
+    {
+      "dataset": "PBCP16",
+      "mode": "full_finetuning",
+      "ok": true,
+      "cached": false,
+      "macro_f1": 0.8891366785790484,
+      "bal_acc": 0.8911392405063291,
+      "acc": 0.8911392405063291,
+      "best_epoch": 11,
+      "elapsed_seconds": 40.9,
+      "config_hash": "7e46299b48dd4204"
+    }
+  ],
+  "ts": "2026-05-23T22:33:58"
+}
